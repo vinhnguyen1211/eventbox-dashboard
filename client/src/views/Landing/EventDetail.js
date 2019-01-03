@@ -256,9 +256,7 @@ const HeaderNav = props => {
 
 const AboutEvent = ({ className, event }) => (
   <div className={className} name="inTroduce">
-    <Card 
-      title="Giới thiệu"
-    >
+    <Card title="Giới thiệu">
       <EditorWysiwyg
         editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(event.description)),)}
         readOnly
