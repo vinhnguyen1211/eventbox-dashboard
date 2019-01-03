@@ -255,10 +255,9 @@ const HeaderNav = props => {
 }
 
 const AboutEvent = ({ className, event }) => (
-  <div className={className}>
+  <div className={className} name="inTroduce">
     <Card 
       title="Giới thiệu"
-      name="inTroduce"
     >
       <EditorWysiwyg
         editorState={EditorState.createWithContent(convertFromRaw(JSON.parse(event.description)),)}
@@ -270,11 +269,8 @@ const AboutEvent = ({ className, event }) => (
 )
 
 const AboutOrganization = ({ className, event }) => (
-  <div className={className}>
-    <Card 
-      title="Nhà tổ chức"
-      name="organizer"
-    >
+  <div className={className} name="organizer">
+    <Card title="Nhà tổ chức">
       <div style={{ display: 'flex' }}>
         <div style={{ marginRight: 18 }}>
           <img
