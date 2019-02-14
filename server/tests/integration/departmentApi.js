@@ -2,6 +2,27 @@ import axios from 'axios'
 
 const API_URL = `http://localhost:${process.env.SERVER_PORT || 8000}/graphql`
 
+export const department = async (variables, token) =>
+  await axios.post(
+    API_URL,
+    {
+      query: `
+        query($id: ID!){
+          department(id: $id){
+            name
+            description
+          }
+        }
+      `, variables
+    }, token
+      ? {
+        headers: {
+          'x-token': token
+        }
+      }
+      : null
+  )
+
 export const departments = async (variables, token) =>
   await axios.post(
     API_URL,
@@ -25,11 +46,11 @@ export const departments = async (variables, token) =>
       : null
   )
 
-export const createDepartment = async (variables,token) => 
+export const createDepartment = async (variables, token) =>
   await axios.post(
     API_URL,
     {
-      query:`
+      query: `
         mutation ($name:String!,$description:String) {
           createDepartment( name: $name,description:$description)
           {
@@ -37,11 +58,11 @@ export const createDepartment = async (variables,token) =>
           }
 
         }
-      `,variables
-    },token
-      ?{
-        headers:{
-          'x-token':token
+      `, variables
+    }, token
+      ? {
+        headers: {
+          'x-token': token
         }
       }
       : null
