@@ -62,17 +62,22 @@ export const createEvent = async (variables, token) =>
       mutation(
         $title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,
         $organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,
-        $startTime: String!, $endTime: String!, $location: String!, $address: String
-      ) {
+        $startTime: String!, $endTime: String!, $location: String!, $address: String,$departments: [ID]
+        ) {
         createEvent(
           title: $title, thumbnail: $thumbnail, description: $description, shortDescription: $shortDescription,
           organizationName: $organizationName, organizationLogo: $organizationLogo,
           organizationDescription: $organizationDescription,
-          startTime: $startTime, endTime: $endTime, location: $location, address: $address
-        ) {
+          startTime: $startTime, endTime: $endTime, location: $location, address: $address,
+          departments: $departments
+          ) {
           title
           description
           status
+          departments{
+            id
+            name
+          }
         }
       }
     `,

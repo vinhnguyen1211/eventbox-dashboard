@@ -12,10 +12,10 @@ describe('departments', () => {
             {
               name: "NNA",
               description: "NNA"
-            },{
+            }, {
               name: "NNA",
               description: "NNA"
-            },{
+            }, {
               name: "ngôn ngữ anh",
               description: "NN"
             },
@@ -27,8 +27,8 @@ describe('departments', () => {
         }
       }
 
-      const { data: { data : { signIn: { token } } } } = await userApi.signIn({ username: 'vinh', password: '123' })
-      const result = await departmentApi.departments({ limit: 2}, token)
+      const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'vinh', password: '123' })
+      const result = await departmentApi.departments({ limit: 2 }, token)
 
       expect(result.data).to.eql(expectedResult)
     })
@@ -37,9 +37,9 @@ describe('departments', () => {
 
 })
 
-describe('createDepartment', ()=>{
-  describe('createDepartment($name:String!,$description:String)',()=>{
-    it.only('create Department successful', async ()=>{
+describe('createDepartment', () => {
+  describe('createDepartment($name:String!,$description:String)', () => {
+    it('create Department successful', async () => {
       let expectedResult = {
         data: {
           createDepartment: {
@@ -50,18 +50,38 @@ describe('createDepartment', ()=>{
 
       const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'vinh', password: '123' })
       console.log(token);
-      
+
       let result
       try {
         result = await departmentApi.createDepartment({
-          name:'LKT',
+          name: 'LKT',
 
-        },token)
+        }, token)
       } catch (error) {
         console.log('err: ', error.response.data);
       }
       console.log('expectedResult: ', result.data)
       expect(result.data).to.eql(expectedResult)
+    })
+
+    it.only('return fail when create department with empty name', async () => {
+      let expectedResult = {
+        data: {
+          createDepartment: {
+            name: null,
+
+          }
+        }
+      }
+      const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'vinh', password: '123' })
+      console.log(token);
+
+      const result = await departmentApi.createDepartment({
+        
+      },token)
+      console.log('expectedResult: ', result.data)
+      expect(result.data).to.eql(expectedResult)
+
     })
   })
 })

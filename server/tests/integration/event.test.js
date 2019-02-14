@@ -71,7 +71,7 @@ describe('listEventsHomepage', () => {
               {
                 id: '5c42162cae614e5a386ea47b',
                 title: 'Event01',
-                status:'draft',
+                status: 'draft',
                 createdAt: '1547834924241',
                 images: {
                   thumbnail: 'https://i.imgur.com/3PuAloY.png'
@@ -83,7 +83,7 @@ describe('listEventsHomepage', () => {
               }, {
                 id: "5c421454ae614e5a386ea47a",
                 title: "Event01",
-                status:'draft',
+                status: 'draft',
                 createdAt: "1547834452716",
                 images: {
                   thumbnail: "https://i.imgur.com/3PuAloY.png"
@@ -98,7 +98,7 @@ describe('listEventsHomepage', () => {
         }
       }
       const { data: { data: { signIn: { token } } } } = await userApi.signIn({ username: 'toai', password: '123' })
-      const result = await eventApi.listEventsHomepage({ status: "draft", limit:2 }, token)
+      const result = await eventApi.listEventsHomepage({ status: "draft", limit: 2 }, token)
 
       expect(result.data).to.eql(expectedResult)
     })
@@ -111,12 +111,17 @@ describe('listEventsHomepage', () => {
 })
 
 describe('createEvent', () => {
-  describe('createEvent($title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,$organizationName: String!, $organizationLogo: String, $organizationDescription: String, $startTime: String, $endTime: String, $location: String, $address: String): [Ev]', () => {
-    it('return create new event', async () => {
+  describe('createEvent($title: String!, $thumbnail: String!, $description: String!, $shortDescription: String,$organizationName: String!, $organizationLogo: String!, $organizationDescription: String!,$startTime: String!, $endTime: String!, $location: String!, $address: String,$departments: [ID]): [Ev]', () => {
+    it.only('return create new event', async () => {
       let expectedResult = {
         data: {
           createEvent: {
             title: 'Event01',
+
+            departments: [
+              '5c338f22ddf243002fceb006'
+            ],
+
             description: "{\"blocks\":[{\"key\":\"be8dd\",\"text\":\"des\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
             status: 'draft'
           }
@@ -130,6 +135,11 @@ describe('createEvent', () => {
           title: "Event01",
           thumbnail: "https://i.imgur.com/3PuAloY.png",
           shortDescription: "short",
+          departments: [
+            '5c338f22ddf243002fceb006'
+          ],
+
+
           description: "{\"blocks\":[{\"key\":\"be8dd\",\"text\":\"des\",\"type\":\"unstyled\",\"depth\":0,\"inlineStyleRanges\":[],\"entityRanges\":[],\"data\":{}}],\"entityMap\":{}}",
           organizationName: "Vanlang University",
           organizationLogo: "https://i.imgur.com/f1Q97JB.png",
