@@ -11,10 +11,3 @@ steps:
     commands:
       - yarn install
       - yarn test
-    when:
-      branch:
-        - master
-        - dev
-        - feature/*
-      event:
-        - pull_request
