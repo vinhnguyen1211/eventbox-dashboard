@@ -1,0 +1,20 @@
+kind: pipeline
+name: default
+
+workspace:
+  base: /server
+  path: .
+
+steps:
+  - name: test
+    image: node:8
+    commands:
+      - yarn install
+      - yarn test
+    when:
+      branch:
+        - master
+        - dev
+        - feature/*
+      event:
+        - pull_request
