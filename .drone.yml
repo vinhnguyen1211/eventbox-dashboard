@@ -1,13 +1,10 @@
 kind: pipeline
 name: default
 
-workspace:
-  base: /server
-  path: .
-
 steps:
   - name: test
     image: node:8
     commands:
+      - cd /server
       - yarn install
       - yarn test
