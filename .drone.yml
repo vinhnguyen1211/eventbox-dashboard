@@ -5,6 +5,7 @@ steps:
   - name: test
     image: node:8
     commands:
-      - cd /server
+      - pwd
+      - list
       - yarn install
       - yarn test
