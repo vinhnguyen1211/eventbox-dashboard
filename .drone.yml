@@ -15,6 +15,7 @@ steps:
         from_secret: MONGODB_URI
     when:
       event:
+        - push
         - pull_request
     commands:
       - cd /drone/src/server
