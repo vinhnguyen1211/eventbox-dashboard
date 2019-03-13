@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, Suspense, lazy } from 'react'
 import { client } from './'
 import { Router, Route, Switch } from 'react-router-dom'
 import gql from 'graphql-tag'
@@ -75,6 +75,10 @@ const setSession = gql`
 //   }
 // }
 
+// const LazyLanding = lazy(() => import('./views/Landing'))
+const LazyEventDetail = lazy(() => import('./views/Landing/EventDetail'))
+const LazyDashboard = lazy(() => import('./views/Layout/Container'))
+
 const App = (props: withSessionProps) => {
   const { refetch, session } = props
 
@@ -103,36 +107,36 @@ const App = (props: withSessionProps) => {
 
   return (
     <Router history={history}>
-      <Switch>
-        <Route exact path={routes.SIGN_UP} component={() => <SignUpPage refetch={refetch} />} />
-        <Route
-          exact
-          path={routes.SIGN_IN}
-          component={() => <SignInPage refetch={refetch} session={session} />}
-        />
-        <Route
-          exact
-          path={routes.HOME}
-          render={() => <Landing refetch={refetch} session={session} />}
-        />
-        <Route
-          exact
-          path={`${routes.EVENT}/:eventId`}
-          render={() => <LandingEventDetail refetch={refetch} session={session} />}
-        />
-        <Route
-          exact
-          path={`${routes.DASHBOARD}*`}
-          render={() =>
-            session && session.me ? (
-              <DashboardContainer session={session} />
-            ) : (
-              <SignInPage refetch={refetch} session={session} />
-            )
-          }
-        />
-        <Route component={Page404} />
-      </Switch>
+      <Suspense fallback={<div>...Loading</div>}>
+        <Switch>
+          <Route path={routes.SIGN_UP} component={() => <SignUpPage refetch={refetch} />} />
+          <Route
+            path={routes.SIGN_IN}
+            component={() => <SignInPage refetch={refetch} session={session} />}
+          />
+          <Route
+            exact
+            path={routes.HOME}
+            render={() => <Landing refetch={refetch} session={session} />}
+          />
+          <Route
+            path={`${routes.EVENT}/:eventId`}
+            // render={() => <LandingEventDetail refetch={refetch} session={session} />}
+            render={() => <LazyEventDetail refetch={refetch} session={session} />}
+          />
+          <Route
+            path={`${routes.DASHBOARD}*`}
+            render={() =>
+              session && session.me ? (
+                <LazyDashboard session={session} />
+              ) : (
+                <SignInPage refetch={refetch} session={session} />
+              )
+            }
+          />
+          <Route component={Page404} />
+        </Switch>
+      </Suspense>
     </Router>
   )
 }
