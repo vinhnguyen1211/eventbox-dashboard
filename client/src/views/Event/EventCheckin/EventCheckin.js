@@ -121,11 +121,9 @@ class EventCheckin extends Component {
               )
             ]}
           >
-            {index + 1}.{' '}
-            {item.userInfo &&
-              item.userInfo.email &&
-              item.userInfo.lastname &&
-              item.userInfo.phoneNumber}
+            {index + 1}. {item.userInfo && item.userInfo.email}
+            {/* <br />
+            {item.userInfo && item.userInfo.phoneNumber} */}
           </List.Item>
         )}
       />
