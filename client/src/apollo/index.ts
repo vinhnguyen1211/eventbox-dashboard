@@ -35,14 +35,22 @@ const terminatingLink = split(
 )
 
 const authLink = new ApolloLink((operation, forward: any) => {
-  operation.setContext(({ headers = {} as any, localToken = localStorage.getItem('token') }) => {
-    if (localToken) {
-      headers['x-token'] = localToken
+  operation.setContext(
+    ({
+      headers = {},
+      localToken = localStorage.getItem('token') as any
+    }: {
+      headers: any
+      localToken: string
+    }) => {
+      if (localToken) {
+        headers['x-token'] = localToken
+      }
+      return {
+        headers
+      }
     }
-    return {
-      headers
-    }
-  })
+  )
 
   return forward(operation)
 })
