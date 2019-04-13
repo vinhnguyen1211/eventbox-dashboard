@@ -16,14 +16,12 @@ services:
     image: eventbox-server-nginx:v1
     depends_on:
       - redis
-      - server1
-      - server2
-      - server3
+      - server
     ports:
       - '8080:80'
     networks:
       - eventbox-net
-  server1:
+  server:
     build:
       context: ./server
       dockerfile: ./Dockerfile
@@ -32,36 +30,6 @@ services:
       - .env
     environment:
       - INSTANCE=server1
-    expose:
-      - ${SERVER_PORT}
-    networks:
-      - eventbox-net
-    restart: always
-    command: npm run serve
-  server2:
-    build:
-      context: ./server
-      dockerfile: ./Dockerfile
-    image: eventbox-server:v2
-    env_file:
-      - .env
-    environment:
-      - INSTANCE=server2
-    expose:
-      - ${SERVER_PORT}
-    networks:
-      - eventbox-net
-    restart: always
-    command: npm run serve
-  server3:
-    build:
-      context: ./server
-      dockerfile: ./Dockerfile
-    image: eventbox-server:v2
-    env_file:
-      - .env
-    environment:
-      - INSTANCE=server3
     expose:
       - ${SERVER_PORT}
     networks:
