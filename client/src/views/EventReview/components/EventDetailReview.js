@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 
 import { Link, Events, scroller } from 'react-scroll'
 
 import { event } from '@gqlQueries'
-import { message, Row, Spin, Col, Icon, Card, Button, BackTop, Divider } from 'antd'
+import { message, Row, Spin, Col, Icon, Card, Button, BackTop, Divider, Modal } from 'antd'
 import { client } from '@client'
 import moment from 'moment'
-// import 'moment/locale/vi'
+import 'moment/locale/vi'
 import { Editor as EditorWysiwyg } from 'react-draft-wysiwyg'
 import { convertFromRaw, EditorState } from 'draft-js'
 import './eventdetail.scss'
@@ -237,9 +237,12 @@ class ApproveButton extends Component {
     return (
       <Mutation mutation={event.APPROVE_EVENT_BYID} variables={{ id: eventId }}>
         {(approveEvent, { data, loading }) => (
+          <Fragment>
+
           <Button type='primary' onClick={() => this.handleApprove(approveEvent)}>
             Duyệt sự kiện
           </Button>
+          </Fragment>
         )}
       </Mutation>
     )
@@ -247,6 +250,18 @@ class ApproveButton extends Component {
 }
 
 class RejectButton extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {visible: false}
+    this.toggleShow = this.toggleShow.bind(this)
+    this.eveOk = this.eveOk.bind(this)
+  }
+  toggleShow() {
+    this.setState({visible : !this.state.visible})
+  }
+  eveOk() {
+    this.setState({visible : false})
+  }
   handleRejct = async (rejectEvent) => {
     try {
       await rejectEvent()
@@ -258,17 +273,29 @@ class RejectButton extends Component {
 
   render() {
     const { eventId } = this.props
-
+    const self = this
     return (
       <Mutation mutation={event.REJECT_EVENT_BYID} variables={{ id: eventId }}>
         {(rejectEvent, { data, loading }) => (
-          <Button type='danger' onClick={() => this.handleRejct(rejectEvent)}>
+          <Fragment>
+          <Button type='danger' onClick={self.toggleShow}>
             Từ chối duyệt
           </Button>
+          <Modal
+          title="Phản Hồi Từ Chối Duyệt Sự Kiện"
+          visible={self.state.visible}
+          onOk={self.eveOk}
+          onCancel={self.eveOk}
+        >
+        {/* <input placeholder="Nhập dữ liệu" type="text" value="" id="" className="ant-input"></input> */}
+        {/* <textarea placeholder="Nhập dữ liệu" value="" id="" className="ant-input" key={name} colon={false} ></textarea> */}
+        <textarea value={this.state.value} onChange={this.handleChange} className="ant-input" />
+        </Modal>
+          </Fragment>
         )}
       </Mutation>
     )
-  }
+ }
 }
 
 export default withRouter(EventDetailReview)
