@@ -9,7 +9,8 @@ import {
   Affix,
   Popconfirm,
   Button,
-  message
+  message,
+  Skeleton
 } from 'antd'
 import './styles.scss'
 import { Query, Mutation } from 'react-apollo'
@@ -116,9 +117,21 @@ class EventCheckin extends Component {
   @observer
   render() {
     const { tickets, loading, t, eventId } = this.props
+    const numberOfCheckedIn = tickets && tickets.filter((t) => t.checkedIn).length
+    // console.log('numberOfCheckedIn: ', numberOfCheckedIn)
 
     return (
       <Row>
+        {loading ? (
+          <Skeleton active paragraph={{ rows: 0 }} />
+        ) : (
+          <Col style={{ paddingBottom: 14 }}>
+            {t('Number of users checked in')}:{' '}
+            <span style={{ fontWeight: 'bold' }}>
+              {numberOfCheckedIn || 0} / {(tickets && tickets.length) || 1}
+            </span>
+          </Col>
+        )}
         <Col span={14}>
           <List
             size='large'
