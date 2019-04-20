@@ -267,9 +267,7 @@ app.get('/api/login/oauthVL', async (req, res) => {
     }
   } else {
     const VL_OAUTH = process.env.VL_OAUTH || ''
-    const EB_HOST = process.env.EVENTBOX_HOST
-      ? encodeURIComponent(`${process.env.EVENTBOX_HOST}/api/login/oauthVL`)
-      : ''
+    const EB_HOST = encodeURIComponent(`${process.env.EVENTBOX_HOST}/api/login/oauthVL`)
     const redirectUrl = `${VL_OAUTH}/LoginVL?redirect_uri=${EB_HOST}&state=${uuidV4()}`
     return res.status(200).redirect(redirectUrl)
   }
