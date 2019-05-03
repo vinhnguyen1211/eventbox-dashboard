@@ -307,10 +307,12 @@ export default {
     rejectEvent: combineResolvers(
       // TODO: authenticate by review-er role
       // isEventOwner,
-      async (parent, { id }, { models }) => {
+      async (parent, args, { models }) => {
+        const {id,feedback} = args
+        console.log(feedback)
         try {
           const { errors } = await models.Event.findByIdAndUpdate(id, {
-            status: 'rejected'
+            status: 'rejected', feedback: feedback
           })
           if (errors) {
             return false

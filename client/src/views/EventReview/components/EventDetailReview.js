@@ -249,8 +249,8 @@ class ApproveButton extends Component {
   }
 }
 const FEEDBACK_REJECT = gql`
-  mutation RejectEvent($feedback: String!) {
-    rejectEvent(feedback: $feedback) {
+  mutation RejectEvent($id: ID!,$feedback: String!) {
+    rejectEvent(id: $id,feedback: $feedback) {
       id
       feedback
     }
@@ -267,7 +267,14 @@ class RejectButton extends Component {
     this.state = {visible: false, value: null}
     this.toggleShow = this.toggleShow.bind(this)
     this.eveOk = this.eveOk.bind(this)
+    this.evecancel = this.evecancel.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     
+  }
+  handleChange(e) {
+    let value = e.target.value
+    console.log(value)
+    this.setState({value})
   }
   toggleShow() {
     this.setState({visible : !this.state.visible})
@@ -291,29 +298,26 @@ class RejectButton extends Component {
     const { eventId } = this.props
     const self = this
     return (
-      <Mutation mutation={event.REJECT_EVENT_BYID} mutation={FEEDBACK_REJECT} variables={{ id: eventId }}>
+      <Mutation mutation={event.REJECT_EVENT_BYID}  variables= {{ id: eventId,feedback: self.state.value } } >
         {(rejectEvent, { data, loading }) => (
           <div>
               <form 
                 onSubmit ={ e => {
                 e.preventDefault();
-                rejectEvent({ variables: { feedback: input.value } });
-                input.value = self.state.value ;
                }} >
-
-                  <Fragment>
-                  <Button type='danger' onClick={self.toggleShow}>
-                    Từ chối duyệt
-                  </Button>
-                  <Modal
-                  title="Phản Hồi Từ Chối Duyệt Sự Kiện"
-                  visible={self.state.visible}
-                  onOk={self.eveOk}
-                  onCancel={self.eveOk}
-                >
-                <textarea value={this.state.value} onChange={this.handleChange} className="ant-input" />
-                </Modal>
-                  </Fragment>
+                    <Fragment>
+                    <Button type='danger' onClick={self.toggleShow}>
+                      Từ chối duyệt
+                    </Button>
+                    <Modal
+                    title="Phản Hồi Từ Chối Duyệt Sự Kiện"
+                    visible={self.state.visible}
+                    onOk={() => {self.handleRejct(rejectEvent)}}
+                    onCancel={self.evecancel}
+                  >
+                  <textarea value={self.state.value} onChange={self.handleChange} className="ant-input" />
+                  </Modal>
+                    </Fragment>
                 </form> 
           </div>
         )}
