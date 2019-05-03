@@ -123,8 +123,8 @@ const APPROVE_EVENT_BYID = gql`
 `
 
 const REJECT_EVENT_BYID = gql`
-  mutation($id: ID!) {
-    rejectEvent(id: $id)
+  mutation($id: ID!, $feedback : String!) {
+    rejectEvent(id: $id, feedback: $feedback)
   }
 `
 

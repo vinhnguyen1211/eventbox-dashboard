@@ -41,6 +41,7 @@ export default gql`
   type EventReviewConnection {
     edges: [Event!]
     departmentIds: [String]
+    feedback: String!
   }
 
   type PageInfo {
@@ -134,7 +135,7 @@ export default gql`
     publishEvent(id: ID!, departmentIds: [ID]!): Event
 
     approveEvent(id: ID!): Boolean!
-    rejectEvent(id: ID!): Boolean!
+    rejectEvent(id: ID!, feedback: String!): Boolean!
 
     joinEvent(eventId: ID!, fullName: String!, studentId: String!): EventTicket!
     unjoinEvent(userId: ID!, eventId: ID!): Event!

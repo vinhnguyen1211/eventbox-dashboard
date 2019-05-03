@@ -95,6 +95,10 @@ let eventSchema = new Schema(
     participants: {
       type: Array
     },
+    feedback: {
+      type: String,
+      default: ''
+    },
     isEnabled: {
       type: Boolean,
       required: true,
