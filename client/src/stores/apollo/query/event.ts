@@ -121,7 +121,28 @@ const COUNT_EVENT_BY_TYPE = gql`
 
 const EVENTS_FOR_SEARCH = gql`
   query {
-    eventsForSearch
+    eventsForSearch {
+      id title slug
+    }
+  }
+`
+
+const EVENTS_BY_KEYWORDS = gql`
+  query ($keywords: String!) {
+    eventsByKeywords(keywords: $keywords) {
+      id
+      title
+      slug
+      status
+      images {
+        thumbnail
+      }
+      startTime
+      user {
+        id
+        username
+      }
+    }
   }
 `
 
@@ -131,5 +152,6 @@ export {
   GET_EVENT_DETAIL,
   GET_EVENTS_INREVIEW,
   COUNT_EVENT_BY_TYPE,
-  EVENTS_FOR_SEARCH
+  EVENTS_FOR_SEARCH,
+  EVENTS_BY_KEYWORDS
 }

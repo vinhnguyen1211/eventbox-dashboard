@@ -193,11 +193,29 @@ export default {
     },
 
     eventsForSearch: async (parent, args, { models }) => {
+      const now = new Date()
+      const thisMonth = now.getMonth()
       return await models.Event.find({
-        startTime: {
-          $gte: new Date()
-        }
-      }).then((data) => data.map((e) => e.title))
+        $and: [
+          {
+            startTime: {
+              $gte: now.setMonth(thisMonth - 3)
+            }
+          },
+          {
+            startTime: {
+              $lte: now.setMonth(thisMonth + 3)
+            }
+          },
+        ]
+      })
+    },
+
+    eventsByKeywords: async (parent, { keywords }, { models }) => {
+      const regex = new RegExp(`.*${keywords}.*`, 'i')
+      return await models.Event.find({
+        title: { $regex: regex }
+      })
     },
 
     eventsForCheckin: combineResolvers(isAuthenticated, async (parent, args, { me, models }) => {

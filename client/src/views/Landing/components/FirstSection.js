@@ -7,6 +7,8 @@ import { withRouter } from 'react-router-dom'
 import * as routes from '@routes'
 import { event } from '@gqlQueries'
 import { Query } from 'react-apollo'
+import { client } from '@client'
+import moment from 'moment'
 
 import { categoryOpts, selectTimeOpts } from '../../../constants/options'
 
@@ -19,31 +21,55 @@ class FirstSection extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      suggestions: []
+      suggestions: [],
+      searchResult: []
     }
   }
 
-  handleGoToEventDetail = (event) => {
+  handleGoToEventDetail = event => {
     this.props.history.push(`${routes.EVENT}/${event.slug}-${event.id}`)
   }
 
-  handleAutoCompleteSelect(value) {
-    console.log(value)
+  handleAutoCompleteSelect = (eventsForSearch, words) => {
+    const selectedEvent = eventsForSearch.filter(
+      event => event.title.toLowerCase().indexOf(words.toLowerCase()) !== -1
+    )[0]
+    this.props.history.push(`${routes.EVENT}/${selectedEvent.slug}-${selectedEvent.id}`)
   }
 
   handleAutoCompleteSearch = (eventsForSearch, words) => {
     if (words) {
-      const suggestions = eventsForSearch.filter(
-        (title) => title.toLowerCase().indexOf(words.toLowerCase()) !== -1
+      const events = eventsForSearch.map(event => event.title)
+      const suggestions = events.filter(
+        title => title.toLowerCase().indexOf(words.toLowerCase()) !== -1
       )
       this.setState({ suggestions })
     } else this.setState({ suggestions: [] })
   }
 
+  handleTab1Search = () => {
+    this.props.form.validateFields(async (err, values) => {
+      if (!err) {
+        try {
+          const { data: { eventsByKeywords } } = await client.query({
+            variables: { keywords: values.searchbar },
+            query: event.EVENTS_BY_KEYWORDS,
+            fetchPolicy: 'network-only'
+          })
+          if (!eventsByKeywords.length) message.warn('No event to show base on your keywords!')
+          this.setState({ searchResult: eventsByKeywords })
+        } catch (err) {
+          message.error(err)
+        }
+      } else return message.error('An error occurred!')
+    })
+  }
+
   render() {
-    const { suggestions } = this.state
-    const { i18n } = this.props
-    const { getFieldDecorator } = this.props.form
+    const {
+      state: { suggestions, searchResult },
+      props: { i18n, form: { getFieldDecorator }, history }
+    } = this
     const formInputLayout = {
       wrapperCol: {
         xs: { span: 24 },
@@ -62,13 +88,13 @@ class FirstSection extends Component {
     }
 
     const categoryOptions = []
-    categoryOpts.map((opt, i) => {
+    categoryOpts.map(opt => {
       categoryOptions.push(<Option key={opt.key}>{i18n.t(opt.text)}</Option>)
       return opt
     })
 
     const selectTimeOptions = []
-    selectTimeOpts.map((opt, i) => {
+    selectTimeOpts.map(opt => {
       selectTimeOptions.push(<Option key={opt.key}>{i18n.t(opt.text)}</Option>)
       return opt
     })
@@ -104,8 +130,8 @@ class FirstSection extends Component {
                             <AutoComplete
                               id='searchbar'
                               dataSource={suggestions}
-                              onSelect={(v) => this.handleAutoCompleteSelect(v)}
-                              onSearch={(v) => this.handleAutoCompleteSearch(eventsForSearch, v)}
+                              onSelect={words => this.handleAutoCompleteSelect(eventsForSearch, words)}
+                              onSearch={words => this.handleAutoCompleteSearch(eventsForSearch, words)}
                               placeholder='Search for events...'
                               style={{ width: '60%' }}
                             />
@@ -121,7 +147,7 @@ class FirstSection extends Component {
                         border: 'rgba(13, 32, 51, .8)'
                       }}
                       type='primary'
-                      htmlType='submit'
+                      onClick={this.handleTab1Search}
                     >
                       {i18n.t('Search')}
                       <Icon type='search' />
@@ -169,15 +195,43 @@ class FirstSection extends Component {
               </TabPane>
             </Tabs>
           </div>
-          <OverPack playScale={0.3} className=''>
-            <QueueAnim
-              className='block-wrapper'
-              type='bottom'
-              key='block'
-              leaveReverse
-              component={Row}
-            >
-              {/* {listChildren} */}
+          <OverPack playScale={0.1} className='content-template'>
+            <QueueAnim className='block-wrapper' type='bottom' key='block'>
+              <Row key='ul' className='content5-img-wrapper' type='flex' gutter={24}>
+                {
+                  (searchResult && searchResult.map((item, index) => (
+                    <Col
+                      xs={24} sm={24} md={12} lg={12}
+                      key={index.toString()}
+                      className='block'
+                      onClick={() => history.push(`${routes.EVENT}/${item.slug}-${item.id}`)}
+                    >
+                      <div className='content5-block-content'>
+                        <div className='coverEvent'>
+                          <img src={item.images.thumbnail} alt='img' />
+                        </div>
+                        <div className='info'>
+                          <div className='nameTitle'>
+                            <span>
+                              {item.title.length > 63
+                                ? item.title.substring(0, 60).concat('...')
+                                : item.title}
+                            </span>
+                          </div>
+                          <div className='categoRies' />
+                          <div style={{ paddingTop: 10 }}>
+                            <div className='fake-calendar'>
+                              <div className='month'>{moment(item.startTime).format('MMMM')}</div>
+                              <div className='date'>{moment(item.startTime).format('DD')}</div>
+                              <div className='weekDate'>{moment(item.startTime).format('dddd')}</div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </Col>
+                  )))
+                }
+              </Row>
             </QueueAnim>
           </OverPack>
         </div>
