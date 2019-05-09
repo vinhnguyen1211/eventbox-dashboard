@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link, Events, scroller } from 'react-scroll'
 import { event } from '@gqlQueries'
-import { message, Row, Spin, Col, Icon, Card, Button, BackTop, Divider } from 'antd'
+import { message, Row, Spin, Col, Icon, Card, Button, BackTop, Divider, Modal } from 'antd'
 import { client } from '@client'
 import moment from 'moment'
 // import 'moment/locale/vi'
@@ -9,6 +9,7 @@ import { Editor as EditorWysiwyg } from 'react-draft-wysiwyg'
 import { convertFromRaw, EditorState } from 'draft-js'
 import { withRouter } from 'react-router'
 import './eventdetail.scss'
+// import { DB_EVENT_REVIEW } from '@routes'
 
 class EventDetailReview extends Component {
   constructor(props) {
@@ -18,7 +19,6 @@ class EventDetailReview extends Component {
       event: undefined
     }
   }
-
   componentDidMount = async () => {
     const { eventId } = this.props.match.params
 
@@ -86,7 +86,7 @@ class EventDetailReview extends Component {
   render() {
     // console.log('event: ',this.state.event)
     const { event, loading } = this.state
-    // const { eventId } = this.props.match.params
+    const { eventId } = this.props.match.params
 
     return (
       <Spin spinning={loading}>
@@ -108,6 +108,11 @@ class EventDetailReview extends Component {
                 <RejectButton eventId={eventId} {...this.props} />
               </div>
             </div> */}
+            <div style={{ display: 'flex' }}>
+              <div style={{ marginRight: 18 }}>
+                <FeedbackButton eventId={eventId} {...this.props} />
+              </div>
+            </div>
             <BackTop />
           </div>
         )}
@@ -216,5 +221,49 @@ const AboutOrganization = ({ className, event }) => (
     </Card>
   </div>
 )
+class FeedbackButton extends Component {
+ 
+  constructor(props) {
+    super(props)
+    this.state = {visible: false, value: null }
+    this.toggleShow = this.toggleShow.bind(this)
+    this.eveOk = this.eveOk.bind(this)
+    this.evecancel = this.evecancel.bind(this)
+    this.state = {
+      loading: true,
+      event: undefined
+    }
+  }
+  toggleShow() {
+    this.setState({visible : !this.state.visible})
+  }
+  eveOk() {
+    this.setState({visible : false})
+  }
+  evecancel() {
+    this.setState({visible : false})
+  }
+  render() {
+    const { event, loading } = this.state
+    const { eventId } = this.props.match.params
+    // const { eventId } = this.props
+    const self = this
+    return (
+          <div>
+                    <Button type='danger' onClick={self.toggleShow}>
+                      Phản hồi từ chối duyệt
+                    </Button>
+                    <Modal
+                    title="Phản Hồi Từ Chối Duyệt Sự Kiện"
+                    visible={self.state.visible}
+                    onOk={self.eveOk}
+                    onCancel={self.evecancel}
+                  >
+                  {/* <textarea value={self.state.value} onChange={self.handleChange} className="ant-input" /> */}
+                  <text></text>
+                  </Modal>
+          </div>
+        )}
+}
 
 export default withRouter(EventDetailReview)

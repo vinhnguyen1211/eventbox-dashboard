@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@progress/kendo-react-excel-export": "^2.10.0",
+    "react-export-excel": "^0.5.3"
+  }
+}
