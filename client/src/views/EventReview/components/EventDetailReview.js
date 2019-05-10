@@ -285,7 +285,7 @@ class RejectButton extends Component {
   evecancel() {
     this.setState({visible : false})
   }
-  handleRejct = async (rejectEvent) => {
+  handleReject = async (rejectEvent) => {
     try {
       await rejectEvent()
       this.props.history.push(DB_EVENT_REVIEW)
@@ -312,7 +312,7 @@ class RejectButton extends Component {
                     <Modal
                     title="Phản Hồi Từ Chối Duyệt Sự Kiện"
                     visible={self.state.visible}
-                    onOk={() => {self.handleRejct(rejectEvent)}}
+                    onOk={() => {self.handleReject(rejectEvent)}}
                     onCancel={self.evecancel}
                   >
                   <textarea value={self.state.value} onChange={self.handleChange} className="ant-input" />

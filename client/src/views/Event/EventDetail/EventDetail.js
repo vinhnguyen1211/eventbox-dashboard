@@ -9,7 +9,9 @@ import { Editor as EditorWysiwyg } from 'react-draft-wysiwyg'
 import { convertFromRaw, EditorState } from 'draft-js'
 import { withRouter } from 'react-router'
 import './eventdetail.scss'
-// import { DB_EVENT_REVIEW } from '@routes'
+import { Query } from 'react-apollo'
+import gql from 'graphql-tag'
+
 
 class EventDetailReview extends Component {
   constructor(props) {
@@ -221,18 +223,35 @@ const AboutOrganization = ({ className, event }) => (
     </Card>
   </div>
 )
+const GET_FEEDBACK = gql`
+    query getEvent ($event: ID! ){
+      event(id: $event){
+        id 
+        title
+        feedback
+        status
+      }
+    }
+`
+const FEEDBACKS = ({ eventId}) => (
+ <Query query={GET_FEEDBACK} variables ={{ event :eventId }}>
+ {({ loading, error, data }) => {
+  if (loading) return "Loading...";
+      if (error) return `Error! ${error.message}`;
+      console.log(data)
+      return (
+       <p>{data.event.feedback}</p>
+      );
+    }}
+ </Query>
+)
 class FeedbackButton extends Component {
- 
   constructor(props) {
     super(props)
     this.state = {visible: false, value: null }
     this.toggleShow = this.toggleShow.bind(this)
     this.eveOk = this.eveOk.bind(this)
     this.evecancel = this.evecancel.bind(this)
-    this.state = {
-      loading: true,
-      event: undefined
-    }
   }
   toggleShow() {
     this.setState({visible : !this.state.visible})
@@ -248,22 +267,23 @@ class FeedbackButton extends Component {
     const { eventId } = this.props.match.params
     // const { eventId } = this.props
     const self = this
-    return (
-          <div>
-                    <Button type='danger' onClick={self.toggleShow}>
-                      Phản hồi từ chối duyệt
-                    </Button>
-                    <Modal
-                    title="Phản Hồi Từ Chối Duyệt Sự Kiện"
-                    visible={self.state.visible}
-                    onOk={self.eveOk}
-                    onCancel={self.evecancel}
-                  >
-                  {/* <textarea value={self.state.value} onChange={self.handleChange} className="ant-input" /> */}
-                  <text></text>
-                  </Modal>
-          </div>
-        )}
+      return (
+            <div>
+              <Button type='danger' onClick={self.toggleShow}>
+                Phản hồi từ chối duyệt
+              </Button>
+              <Modal
+                title="Phản Hồi Từ Chối Duyệt Sự Kiện"
+                visible={self.state.visible}
+                onOk={self.eveOk}
+                onCancel={self.evecancel}
+              >
+              <div>
+                  <p1><FEEDBACKS eventId={eventId} /></p1>
+                </div>
+              </Modal>
+            </div>
+          )}
 }
 
 export default withRouter(EventDetailReview)

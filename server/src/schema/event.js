@@ -27,6 +27,7 @@ export default gql`
     status: String!
     createdAt: Date!
     updatedAt: Date!
+    feedback: String!
   }
 
   type EventImages {

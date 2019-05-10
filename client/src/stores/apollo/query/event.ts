@@ -83,6 +83,7 @@ const GET_EVENT_DETAIL = gql`
       }
       status
       participants
+      feedback
     }
   }
 `
