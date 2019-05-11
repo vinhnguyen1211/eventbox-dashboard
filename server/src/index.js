@@ -152,7 +152,7 @@ server.applyMiddleware({
   app,
   path: '/graphql',
   cors: {
-    origin: [`http://${HOST}:${PORT}`, `https://${HOST}:${PORT}`]
+    origin: [`http://${HOST}:${PORT}`, `http://localhost:3005`]
   }
 })
 

@@ -9,17 +9,14 @@ import './styles.scss'
 @withModal
 @inject('stores')
 @observer
-class Department extends Component<any>{
-
-  componentDidMount = () => {
-
-  }
+class Department extends Component<any> {
+  componentDidMount = () => {}
 
   handleOpenAdd = () => {
     const { modal } = this.props
     modal.show({
       title: 'Thêm mới Khoa',
-      body: <FormAddDepartment onAddSuccess={this.handleAddSuccess} />,
+      body: <FormAddDepartment onAddSuccess={this.handleAddSuccess} />
     })
   }
 
@@ -33,7 +30,7 @@ class Department extends Component<any>{
   render() {
     return (
       <div>
-        <Button type='primary' onClick={this.handleOpenAdd} >
+        <Button type='primary' onClick={this.handleOpenAdd}>
           Thêm mới khoa
         </Button>
         <Divider />
