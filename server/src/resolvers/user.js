@@ -8,7 +8,7 @@ import rp from 'request-promise'
 import nodemailer from 'nodemailer'
 import confirmEmail from './mailTemplate/confirmEmail'
 
-const tokenExpired = 60 * 60 * 8 // 8 hours
+export const tokenExpired = 60 * 60 * 8 // 8 hours
 const tokenExpiredMobile = '7d' // 7 days
 const EVENTBOX_HOST = process.env.EVENTBOX_HOST || 'http://localhost:8000'
 
