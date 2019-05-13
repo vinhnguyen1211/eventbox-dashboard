@@ -19,6 +19,17 @@ import gql from 'graphql-tag'
 import { observable } from 'mobx'
 import { withTranslation } from 'react-i18next'
 import { observer } from 'mobx-react'
+import ReactExport from 'react-data-export'
+
+const ExcelFile = ReactExport.ExcelFile
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn
+
+const dataSet1 = [
+]
+
+var dataSet2 = [
+]
 
 const EventCheckinWrapper = (props) => {
   const { eventId } = props.match.params
@@ -45,6 +56,22 @@ const EventCheckinWrapper = (props) => {
                 />
               )}
             </Query>
+            <div>
+              <ExcelFile element={<button>Download Data</button>}>
+                <ExcelSheet data={dataSet1} name='Employees'>
+                  <ExcelColumn label='Name' value='name'/>
+                  <ExcelColumn label='Wallet Money' value='amount'/>
+                  <ExcelColumn label='Gender' value='sex'/>
+                  <ExcelColumn label='Marital Status'
+                    value={(col) => col.is_married ? 'Married' : 'Single'}/>
+                </ExcelSheet>
+                <ExcelSheet data={dataSet2} name='Leaves'>
+                  <ExcelColumn label='Name' value='name'/>
+                  <ExcelColumn label='Total Leaves' value='total'/>
+                  <ExcelColumn label='Remaining Leaves' value='remaining'/>
+                </ExcelSheet>
+              </ExcelFile>
+            </div> 
           </div>
         )}
       </Query>
@@ -63,6 +90,22 @@ const EventCheckinWrapper = (props) => {
             />
           )}
         </Query>
+        <div>
+          <ExcelFile element={<button>Download Data</button>}>
+            <ExcelSheet data={dataSet1} name='Employees'>
+              <ExcelColumn label='Name' value='name'/>
+              <ExcelColumn label='Wallet Money' value='amount'/>
+              <ExcelColumn label='Gender' value='sex'/>
+              <ExcelColumn label='Marital Status'
+                value={(col) => col.is_married ? 'Married' : 'Single'}/>
+            </ExcelSheet>
+            <ExcelSheet data={dataSet2} name='Leaves'>
+              <ExcelColumn label='Name' value='name'/>
+              <ExcelColumn label='Total Leaves' value='total'/>
+              <ExcelColumn label='Remaining Leaves' value='remaining'/>
+            </ExcelSheet>
+          </ExcelFile>
+        </div> 
       </div>
     )
   }
