@@ -21,16 +21,6 @@ import { withTranslation } from 'react-i18next'
 import { observer } from 'mobx-react'
 import ReactExport from 'react-data-export'
 
-const ExcelFile = ReactExport.ExcelFile
-const ExcelSheet = ReactExport.ExcelFile.ExcelSheet
-const ExcelColumn = ReactExport.ExcelFile.ExcelColumn
-
-const dataSet1 = [
-]
-
-var dataSet2 = [
-]
-
 const EventCheckinWrapper = (props) => {
   const { eventId } = props.match.params
   const { state } = props.location
@@ -52,60 +42,39 @@ const EventCheckinWrapper = (props) => {
                   eventId={eventId}
                   loading={loading}
                   tickets={data.tickets}
-                  subscribeToMore={subscribeToMore}
+                  subscribeToMore={subscribeToMore} 
                 />
               )}
             </Query>
-            <div>
-              <ExcelFile element={<button>Download Data</button>}>
-                <ExcelSheet data={dataSet1} name='Employees'>
-                  <ExcelColumn label='Name' value='name'/>
-                  <ExcelColumn label='Wallet Money' value='amount'/>
-                  <ExcelColumn label='Gender' value='sex'/>
-                  <ExcelColumn label='Marital Status'
-                    value={(col) => col.is_married ? 'Married' : 'Single'}/>
-                </ExcelSheet>
-                <ExcelSheet data={dataSet2} name='Leaves'>
-                  <ExcelColumn label='Name' value='name'/>
-                  <ExcelColumn label='Total Leaves' value='total'/>
-                  <ExcelColumn label='Remaining Leaves' value='remaining'/>
-                </ExcelSheet>
-              </ExcelFile>
-            </div> 
           </div>
         )}
       </Query>
     )
   } else {
+
     return (
       <div>
-        <TitleWrapper event={{ title: state.eventTitle }} />
-        <Query query={ticket.TICKETS} variables={{ eventId }}>
-          {({ data, loading, subscribeToMore }) => (
-            <EventCheckin
-              eventId={eventId}
-              loading={loading}
-              tickets={data.tickets}
-              subscribeToMore={subscribeToMore}
-            />
-          )}
-        </Query>
         <div>
-          <ExcelFile element={<button>Download Data</button>}>
-            <ExcelSheet data={dataSet1} name='Employees'>
-              <ExcelColumn label='Name' value='name'/>
-              <ExcelColumn label='Wallet Money' value='amount'/>
-              <ExcelColumn label='Gender' value='sex'/>
-              <ExcelColumn label='Marital Status'
-                value={(col) => col.is_married ? 'Married' : 'Single'}/>
-            </ExcelSheet>
-            <ExcelSheet data={dataSet2} name='Leaves'>
-              <ExcelColumn label='Name' value='name'/>
-              <ExcelColumn label='Total Leaves' value='total'/>
-              <ExcelColumn label='Remaining Leaves' value='remaining'/>
-            </ExcelSheet>
-          </ExcelFile>
-        </div> 
+          <TitleWrapper event={{ title: state.eventTitle }} />
+          <Query query={ticket.TICKETS} variables={{ eventId }}>
+            {({ data, loading, subscribeToMore }) => (
+              <div>
+                <EventCheckin
+                  eventId={eventId}
+                  loading={loading}
+                  tickets={data.tickets}
+                  subscribeToMore={subscribeToMore}
+                />
+                <div style={{ padding: '10px' }}>
+                  <DownloadButton eventId={eventId}
+                    loading={loading}
+                    tickets={data.tickets}
+                    subscribeToMore={subscribeToMore} />
+                </div>
+              </div>
+            )}
+          </Query>
+        </div>
       </div>
     )
   }
@@ -161,97 +130,100 @@ class EventCheckin extends Component {
     const { tickets, loading, t, eventId } = this.props
 
     return (
-      <Row>
-        <Col span={14}>
-          <List
-            size='large'
-            loading={loading}
-            // header={<div>Header</div>}
-            // footer={<div>Footer</div>}
-            bordered
-            dataSource={loading ? [] : tickets}
-            className='event-checkin-list__wrapper'
-            renderItem={(item, index) => (
-              <List.Item
-                className={`tag-custom-type-${item.checkedIn ? 'success' : 'error'} ${
-                  item.id === (this.ticket && this.ticket.id) ? 'selected' : ''
-                }`}
-                actions={[
-                  item.checkedInTime ? (
-                    <Tooltip title={moment(item.checkedInTime).format('DD/MM/YYYY HH:mm:ss')}>
-                      {moment(item.checkedInTime).fromNow()}
-                    </Tooltip>
-                  ) : (
-                    'Ticket available'
-                  ),
-                  <Mutation
-                    mutation={ticket.DELETE_TICKET}
-                    variables={{ eventId, ticketId: item.id }}
-                    update={(cache, { data: { deleteTicket } }) => {
-                      if (!deleteTicket) {
-                        return
-                      }
-                      try {
-                        const data = cache.readQuery({
-                          query: ticket.TICKETS,
-                          variables: { eventId }
-                        })
-                        cache.writeQuery({
-                          query: ticket.TICKETS,
-                          variables: { eventId },
-                          data: {
-                            ...data,
-                            tickets: data.tickets.filter((t) => t.id !== item.id)
+      <div>
+        <div>
+          <Row>
+            <Col span={14}>
+              <List
+                size='large'
+                loading={loading}
+                // header={<div>Header</div>}
+                // footer={<div>Footer</div>}
+                bordered
+                dataSource={loading ? [] : tickets}
+                className='event-checkin-list__wrapper'
+                renderItem={(item, index) => (
+                  <List.Item
+                    className={`tag-custom-type-${item.checkedIn ? 'success' : 'error'} ${
+                      item.id === (this.ticket && this.ticket.id) ? 'selected' : ''
+                    }`}
+                    actions={[
+                      item.checkedInTime ? (
+                        <Tooltip title={moment(item.checkedInTime).format('DD/MM/YYYY HH:mm:ss')}>
+                          {moment(item.checkedInTime).fromNow()}
+                        </Tooltip>
+                      ) : (
+                        'Ticket available'
+                      ),
+                      <Mutation
+                        mutation={ticket.DELETE_TICKET}
+                        variables={{ eventId, ticketId: item.id }}
+                        update={(cache, { data: { deleteTicket } }) => {
+                          if (!deleteTicket) {
+                            return
                           }
-                        })
-                      } catch (error) {
-                        // console.log('error: ', error)
-                      }
-                    }}
-                    onCompleted={() => {
-                      message.success('Remove ticket successfully!')
-                    }}
-                  >
-                    {(deleteTicket, { data, loading, error }) => (
-                      <Popconfirm
-                        placement='topRight'
-                        title={t('Are you sure to remove this ticket?')}
-                        onConfirm={deleteTicket}
-                        okText='Yes'
-                        cancelText='No'
+                          try {
+                            const data = cache.readQuery({
+                              query: ticket.TICKETS,
+                              variables: { eventId }
+                            })
+                            cache.writeQuery({
+                              query: ticket.TICKETS,
+                              variables: { eventId },
+                              data: {
+                                ...data,
+                                tickets: data.tickets.filter((t) => t.id !== item.id)
+                              }
+                            })
+                          } catch (error) {
+                          // console.log('error: ', error)
+                          }
+                        }}
+                        onCompleted={() => {
+                          message.success('Remove ticket successfully!')
+                        }}
                       >
-                        <Button type='danger' loading={loading}>
-                          {t('Remove')}
-                        </Button>
-                      </Popconfirm>
-                    )}
-                  </Mutation>
-                ]}
-              >
-                <List.Item.Meta
-                  title={`${index + 1}. ${item.userInfo && item.userInfo.email}`}
-                  onClick={() => {
-                    if (this.ticket && this.ticket.id === item.id) {
-                      this.ticket = undefined
-                    } else {
-                      this.ticket = item
-                    }
-                  }}
-                />
-              </List.Item>
-            )}
-          />
-        </Col>
-        <Col span={10} style={{ paddingLeft: 14 }}>
-          <Affix offsetTop={30}>
-            <TicketInfo ticket={this.ticket || {}} />
-          </Affix>
-        </Col>
-      </Row>
+                        {(deleteTicket, { data, loading, error }) => (
+                          <Popconfirm
+                            placement='topRight'
+                            title={t('Are you sure to remove this ticket?')}
+                            onConfirm={deleteTicket}
+                            okText='Yes'
+                            cancelText='No'
+                          >
+                            <Button type='danger' loading={loading}>
+                              {t('Remove')}
+                            </Button>
+                          </Popconfirm>
+                        )}
+                      </Mutation>
+                    ]}
+                  >
+                    <List.Item.Meta
+                      title={`${index + 1}. ${item.userInfo && item.userInfo.email}`}
+                      onClick={() => {
+                        if (this.ticket && this.ticket.id === item.id) {
+                          this.ticket = undefined
+                        } else {
+                          this.ticket = item
+                        }
+                      }}
+                    />
+                  </List.Item>
+                )}
+              />
+            </Col>
+            <Col span={10} style={{ paddingLeft: 14 }}>
+              <Affix offsetTop={30}>
+                <TicketInfo ticket={this.ticket || {}} />
+              </Affix>
+            </Col>
+          </Row>
+        </div>
+      </div>
     )
   }
 }
-
 const TicketInfo = withTranslation()(
   observer(
     ({ t: trans, ticket }) =>
@@ -304,3 +276,35 @@ const TicketInfo = withTranslation()(
       )
   )
 )
+const ExcelFile = ReactExport.ExcelFile;
+const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
+const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
+
+class DownloadButton extends Component {
+   constructor(props) {
+    super(props)
+    this.state = {
+      loading: true,
+      event: undefined
+    }
+  }
+  render() {
+    debugger;
+    const { tickets } = this.props
+      return (
+        <div>
+        <ExcelFile element={<button>Download Data</button>}>
+              <ExcelSheet  data={tickets} name="Data">
+                  <ExcelColumn  label="Ticket Email" value={(col) => col.userInfo.email} />
+                  <ExcelColumn label="Ticket Username" value={(col) => col.userInfo.username} />
+                  <ExcelColumn  label="Code" value= "code" />
+                  <ExcelColumn label="checkedIn" value= "checkedIn" />
+                  <ExcelColumn label="checkedInTime" value= "checkedInTime" numFmt="m/dd/yy" />
+              </ExcelSheet>
+          </ExcelFile>
+          </div>
+      );
+      debugger;
+  }
+}
+
