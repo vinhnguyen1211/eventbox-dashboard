@@ -63,53 +63,56 @@ const fromCursorHash = (string) => Buffer.from(string, 'base64').toString('ascii
 
 export default {
   Query: {
-    events: async (parent, { status, cursor, limit = 50 }, { models, me, isAdmin }) => {
-      const cursorOptions = cursor
-        ? {
-            createdAt: {
-              $lt: fromCursorHash(cursor)
-            }
-          }
-        : {}
-      let selfEventsCondition
-      if (!status) {
-        selfEventsCondition = !isAdmin
+    events: combineResolvers(
+      isAuthenticated,
+      async (parent, { status, cursor, limit = 50 }, { models, me, isAdmin }) => {
+        const cursorOptions = cursor
           ? {
-              userId: me.id
+              createdAt: {
+                $lt: fromCursorHash(cursor)
+              }
             }
           : {}
-      } else {
-        selfEventsCondition = {
-          status
-        }
-      }
-
-      const events = await models.Event.find(
-        {
-          ...cursorOptions,
-          ...selfEventsCondition
-        },
-        null,
-        {
-          limit: limit + 1,
-          sort: {
-            createdAt: -1
+        let selfEventsCondition
+        if (!status) {
+          selfEventsCondition = !isAdmin
+            ? {
+                userId: me.id
+              }
+            : {}
+        } else {
+          selfEventsCondition = {
+            status
           }
         }
-      )
 
-      const hasNextPage = events.length > limit
-      const edges = hasNextPage ? events.slice(0, -1) : events
+        const events = await models.Event.find(
+          {
+            ...cursorOptions,
+            ...selfEventsCondition
+          },
+          null,
+          {
+            limit: limit + 1,
+            sort: {
+              createdAt: -1
+            }
+          }
+        )
 
-      return {
-        edges,
-        pageInfo: {
-          hasNextPage,
-          endCursor:
-            events.length > 0 ? toCursorHash(edges[edges.length - 1].createdAt.toString()) : ''
+        const hasNextPage = events.length > limit
+        const edges = hasNextPage ? events.slice(0, -1) : events
+
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage,
+            endCursor:
+              events.length > 0 ? toCursorHash(edges[edges.length - 1].createdAt.toString()) : ''
+          }
         }
       }
-    },
+    ),
     eventsHome: async (parent, { limit = 8 }, { me, models }) => {
       const events = await models.Event.find(
         {
@@ -206,7 +209,7 @@ export default {
             startTime: {
               $lte: now.setMonth(thisMonth + 3)
             }
-          },
+          }
         ]
       })
     },

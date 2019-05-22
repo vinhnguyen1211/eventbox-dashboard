@@ -26,22 +26,22 @@ class FirstSection extends Component {
     }
   }
 
-  handleGoToEventDetail = event => {
+  handleGoToEventDetail = (event) => {
     this.props.history.push(`${routes.EVENT}/${event.slug}-${event.id}`)
   }
 
   handleAutoCompleteSelect = (eventsForSearch, words) => {
     const selectedEvent = eventsForSearch.filter(
-      event => event.title.toLowerCase().indexOf(words.toLowerCase()) !== -1
+      (event) => event.title.toLowerCase().indexOf(words.toLowerCase()) !== -1
     )[0]
     this.props.history.push(`${routes.EVENT}/${selectedEvent.slug}-${selectedEvent.id}`)
   }
 
   handleAutoCompleteSearch = (eventsForSearch, words) => {
     if (words) {
-      const events = eventsForSearch.map(event => event.title)
+      const events = eventsForSearch.map((event) => event.title)
       const suggestions = events.filter(
-        title => title.toLowerCase().indexOf(words.toLowerCase()) !== -1
+        (title) => title.toLowerCase().indexOf(words.toLowerCase()) !== -1
       )
       this.setState({ suggestions })
     } else this.setState({ suggestions: [] })
@@ -51,7 +51,9 @@ class FirstSection extends Component {
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         try {
-          const { data: { eventsByKeywords } } = await client.query({
+          const {
+            data: { eventsByKeywords }
+          } = await client.query({
             variables: { keywords: values.searchbar },
             query: event.EVENTS_BY_KEYWORDS,
             fetchPolicy: 'network-only'
@@ -68,7 +70,11 @@ class FirstSection extends Component {
   render() {
     const {
       state: { suggestions, searchResult },
-      props: { i18n, form: { getFieldDecorator }, history }
+      props: {
+        i18n,
+        form: { getFieldDecorator },
+        history
+      }
     } = this
     const formInputLayout = {
       wrapperCol: {
@@ -88,13 +94,13 @@ class FirstSection extends Component {
     }
 
     const categoryOptions = []
-    categoryOpts.map(opt => {
+    categoryOpts.map((opt) => {
       categoryOptions.push(<Option key={opt.key}>{i18n.t(opt.text)}</Option>)
       return opt
     })
 
     const selectTimeOptions = []
-    selectTimeOpts.map(opt => {
+    selectTimeOpts.map((opt) => {
       selectTimeOptions.push(<Option key={opt.key}>{i18n.t(opt.text)}</Option>)
       return opt
     })
@@ -121,23 +127,32 @@ class FirstSection extends Component {
                   }}
                 >
                   <Query query={event.EVENTS_FOR_SEARCH} fetchPolicy='cache-first'>
-                    {({ loading, error, data: { eventsForSearch } }) => {
+                    {({ loading, error, data }) => {
                       if (loading) return <Skeleton />
                       if (error) return message.error(error)
-                      return (
-                        <FormItem {...formInputLayout}>
-                          {getFieldDecorator('searchbar', { rules: [] })(
-                            <AutoComplete
-                              id='searchbar'
-                              dataSource={suggestions}
-                              onSelect={words => this.handleAutoCompleteSelect(eventsForSearch, words)}
-                              onSearch={words => this.handleAutoCompleteSearch(eventsForSearch, words)}
-                              placeholder='Search for events...'
-                              style={{ width: '60%' }}
-                            />
-                          )}
-                        </FormItem>
-                      )
+                      if (data && data.eventsForSearch) {
+                        const { eventsForSearch } = data
+                        return (
+                          <FormItem {...formInputLayout}>
+                            {getFieldDecorator('searchbar', { rules: [] })(
+                              <AutoComplete
+                                id='searchbar'
+                                dataSource={suggestions}
+                                onSelect={(words) =>
+                                  this.handleAutoCompleteSelect(eventsForSearch, words)
+                                }
+                                onSearch={(words) =>
+                                  this.handleAutoCompleteSearch(eventsForSearch, words)
+                                }
+                                placeholder='Search for events...'
+                                style={{ width: '60%' }}
+                              />
+                            )}
+                          </FormItem>
+                        )
+                      } else {
+                        return null
+                      }
                     }}
                   </Query>
                   <FormItem {...formButtonLayout}>
@@ -198,10 +213,13 @@ class FirstSection extends Component {
           <OverPack playScale={0.1} className='content-template'>
             <QueueAnim className='block-wrapper' type='bottom' key='block'>
               <Row key='ul' className='content5-img-wrapper' type='flex' gutter={24}>
-                {
-                  (searchResult && searchResult.map((item, index) => (
+                {searchResult &&
+                  searchResult.map((item, index) => (
                     <Col
-                      xs={24} sm={24} md={12} lg={12}
+                      xs={24}
+                      sm={24}
+                      md={12}
+                      lg={12}
                       key={index.toString()}
                       className='block'
                       onClick={() => history.push(`${routes.EVENT}/${item.slug}-${item.id}`)}
@@ -223,14 +241,15 @@ class FirstSection extends Component {
                             <div className='fake-calendar'>
                               <div className='month'>{moment(item.startTime).format('MMMM')}</div>
                               <div className='date'>{moment(item.startTime).format('DD')}</div>
-                              <div className='weekDate'>{moment(item.startTime).format('dddd')}</div>
+                              <div className='weekDate'>
+                                {moment(item.startTime).format('dddd')}
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </Col>
-                  )))
-                }
+                  ))}
               </Row>
             </QueueAnim>
           </OverPack>

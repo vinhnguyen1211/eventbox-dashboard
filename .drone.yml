@@ -1,6 +1,10 @@
 kind: pipeline
 name: default
 
+services:
+  - name: cache
+    image: redis
+
 steps:
   - name: test
     image: node:8
@@ -13,6 +17,8 @@ steps:
         from_secret: SERVER_PORT
       MONGODB_URI:
         from_secret: MONGODB_URI
+      REDIS_PUBSUB_HOST:
+        from_secret: REDIS_PUBSUB_HOST
     when:
       event:
         - pull_request
