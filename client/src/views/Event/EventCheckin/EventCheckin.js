@@ -289,23 +289,22 @@ class DownloadButton extends Component {
     }
   }
   render() {
-    debugger;
     const { tickets } = this.props
       return (
         <div>
         <ExcelFile element={<button>Download Data</button>}>
               <ExcelSheet  data={tickets} name="ListUser">
-                  <ExcelColumn type =" style: BORDER_STYLE, color: COLOR_SPEC" label="Ticket Email" value={(col) => col.userInfo.email} />
-                  <ExcelColumn label="Ticket Username" value={(col) => col.userInfo.username} />
+                  <ExcelColumn  label="Ticket Email" value={(col) => col.userInfo.email} />
+                  <ExcelColumn label="Ticket Username" value="fullName" />
                   <ExcelColumn  label="studentId" value= "studentId" />
                   <ExcelColumn  label="Code" value= "code" />
-                  <ExcelColumn label="checkedIn" value= "checkedIn" />
-                  {/* <ExcelColumn label="checkedInTime" value= "checkedInTime" numFmt="m/dd/yy" /> */}
+                  <ExcelColumn label="CreatedAt" value= "createdAt" numFmt="m/dd/yy" />
+                  <ExcelColumn label="CheckedInTime" value= "checkedInTime" numFmt="m/dd/yy" />
+                  <ExcelColumn label="CheckedIn" value= "checkedIn" />
               </ExcelSheet>
           </ExcelFile>
           </div>
       );
-      debugger;
   }
 }
 
