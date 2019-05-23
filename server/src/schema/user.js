@@ -49,6 +49,8 @@ export default gql`
 
     photoUpload(file: Upload!): String
     updateProfie(firstname: String!, lastname: String!, phoneNumber: String!): Boolean
+
+    changePassword(newPassword: String!): Boolean
   }
 
   extend type Subscription {
