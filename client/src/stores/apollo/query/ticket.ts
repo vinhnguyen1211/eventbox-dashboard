@@ -14,6 +14,8 @@ const TICKETS = gql`
         phoneNumber
       }
       createdAt
+      fullName
+      studentId
     }
   }
 `

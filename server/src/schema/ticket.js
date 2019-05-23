@@ -13,6 +13,8 @@ export default gql`
     eventInfo: Event
     createdAt: Date
     updatedAt: Date
+    fullName: String
+    studentId: String
   }
 
   extend type Query {

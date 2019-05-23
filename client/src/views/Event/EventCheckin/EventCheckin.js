@@ -294,12 +294,13 @@ class DownloadButton extends Component {
       return (
         <div>
         <ExcelFile element={<button>Download Data</button>}>
-              <ExcelSheet  data={tickets} name="Data">
-                  <ExcelColumn  label="Ticket Email" value={(col) => col.userInfo.email} />
+              <ExcelSheet  data={tickets} name="ListUser">
+                  <ExcelColumn type =" style: BORDER_STYLE, color: COLOR_SPEC" label="Ticket Email" value={(col) => col.userInfo.email} />
                   <ExcelColumn label="Ticket Username" value={(col) => col.userInfo.username} />
+                  <ExcelColumn  label="studentId" value= "studentId" />
                   <ExcelColumn  label="Code" value= "code" />
                   <ExcelColumn label="checkedIn" value= "checkedIn" />
-                  <ExcelColumn label="checkedInTime" value= "checkedInTime" numFmt="m/dd/yy" />
+                  {/* <ExcelColumn label="checkedInTime" value= "checkedInTime" numFmt="m/dd/yy" /> */}
               </ExcelSheet>
           </ExcelFile>
           </div>
