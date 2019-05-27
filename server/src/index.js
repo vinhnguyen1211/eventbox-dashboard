@@ -258,7 +258,7 @@ app.get('/api/login/oauthVL', async (req, res) => {
       }
       // set cookie
       res.cookie('_session_', token, {
-        secure: PROD_MODE,
+        // secure: PROD_MODE,
         maxAge: 10000
         // domain: PROD_MODE ? 'eventvlu.tk' : ''
       })
