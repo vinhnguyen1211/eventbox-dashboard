@@ -120,7 +120,7 @@ class EventDetailReview extends React.Component {
 
 const Header = (props) => {
   const { event } = props
-  const time = moment(Number(event.startTime))
+  const time = moment(event.startTime)
   // console.log('time: ', time.format('MMMM') )
   // console.log('time: ', time.format('dddd') )
   // console.log('time: ', time.format('DD') )
@@ -257,15 +257,23 @@ class RejectButton extends Component {
   }
 
   render() {
-    const { eventId } = this.props
+    const {
+      handleRejct,
+      props: { eventId }
+    } = this
 
     return (
       <Mutation mutation={event.REJECT_EVENT_BYID} variables={{ id: eventId }}>
-        {(rejectEvent, { data, loading }) => (
-          <Button type='danger' onClick={() => this.handleRejct(rejectEvent)}>
-            Từ chối duyệt
-          </Button>
-        )}
+        {(rejectEvent, { data, loading }) => {
+          const onClick = () => {
+            handleRejct(rejectEvent)
+          }
+          return (
+            <Button type='danger' onClick={onClick}>
+              Từ chối duyệt
+            </Button>
+          )
+        }}
       </Mutation>
     )
   }
