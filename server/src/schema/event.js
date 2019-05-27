@@ -79,7 +79,8 @@ export default gql`
     eventsInReview(page: Int, limit: Int): EventReviewConnection!
     event(id: ID!): Event
     countEventByType: countResult
-    eventsForSearch: [String]
+    eventsForSearch: [Event]
+    eventsByKeywords(keywords: String!): [Event]
     eventsForCheckin: [Event]
   }
 
