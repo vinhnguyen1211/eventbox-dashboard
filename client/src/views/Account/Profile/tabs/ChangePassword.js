@@ -1,7 +1,26 @@
 import React, { Component } from 'react'
-import { Row, Col, Form, Button, Input } from 'antd'
+import { Row, Col, Form, Button, Input, message } from 'antd'
+import { client } from '@client'
+import { user } from '@gqlQueries'
 
 class ChangePassword extends Component {
+  onSubmit = e => {
+    e.preventDefault()
+    const { validateFields } = this.props.form
+    validateFields((err, values) => {
+      if (!err) {
+        if (values.newPassword === values.confirmPassword)
+          client.mutate({
+            variables: { newPassword: values.newPassword },
+            mutation: user.CHANGE_USER_PASSWORD
+          })
+            .then(() => message.success('Password changed successfully'))
+            .catch(() => message.error('An error occurred!'))
+        else return message.error('Password does not match!')
+      } else return message.error('An error occurred!')
+    })
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form
     const formItemLayout = {
@@ -30,13 +49,7 @@ class ChangePassword extends Component {
                 padding: 20
               }}
             >
-              <Form>
-                <Form.Item {...formItemLayout} label='Old Password' hasFeedback>
-                  {getFieldDecorator('oldPassword', {
-                    rules: [{ required: true, message: 'Old password is required!' }]
-                  })(<Input id='oldPassword' placeholder='Input old password' />)}
-                </Form.Item>
-
+              <Form onSubmit={this.onSubmit}>
                 <Form.Item {...formItemLayout} label='New Password' hasFeedback>
                   {getFieldDecorator('newPassword', {
                     rules: [{ required: true, message: 'New password is required!' }]

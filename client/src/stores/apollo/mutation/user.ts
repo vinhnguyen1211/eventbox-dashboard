@@ -25,3 +25,9 @@ export const USER_UPDATE_PROFILE = gql`
     updateProfie(firstname: $firstname, lastname: $lastname, phoneNumber: $phoneNumber)
   }
 `
+
+export const CHANGE_USER_PASSWORD = gql`
+  mutation($newPassword: String!) {
+    changePassword(newPassword: $newPassword)
+  }
+`

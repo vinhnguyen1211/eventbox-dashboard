@@ -4,6 +4,7 @@ import { combineResolvers } from 'graphql-resolvers'
 import { AuthenticationError, UserInputError } from 'apollo-server'
 import { isAuthenticated, isAdmin, isDepartmentMember } from './authorization'
 import rp from 'request-promise'
+import { hash } from 'bcryptjs'
 
 import nodemailer from 'nodemailer'
 import confirmEmail from './mailTemplate/confirmEmail'
@@ -212,7 +213,16 @@ export default {
       await models.User.findByIdAndUpdate(me.id, { photo })
 
       return photo
-    })
+    }),
+
+    changePassword: combineResolvers(
+      isAuthenticated,
+      async (parent, { newPassword }, { models, me }) => {
+        const password = await hash(newPassword, 10)
+        const updated = await models.User.findByIdAndUpdate(me.id, { password })
+        return !!updated
+      }
+    )
   },
 
   User: {
