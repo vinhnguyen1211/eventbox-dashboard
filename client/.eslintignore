@@ -2,6 +2,11 @@
 /build
 /node_modules
 translation
+
+# test
+/cypress
+cypress.json
+
 # files
 registerServiceWorker.js
 package.json

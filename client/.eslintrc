@@ -13,6 +13,9 @@
     "browser": true,
     "jest": true
   },
+  "globals": {
+    "cy": true
+  },
   "rules": {
     "react/prop-types": 0,
     "max-len": [

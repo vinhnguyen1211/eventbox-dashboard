@@ -67,7 +67,7 @@ class Header extends React.Component {
             const userTitle = (
               <div>
                 <Avatar size={36} alt='img' src={me.photo} />
-                <span>
+                <span name='SIGNIN_USERINFO'>
                   {me.username} | {me.email}
                 </span>
               </div>
@@ -90,7 +90,7 @@ class Header extends React.Component {
                 <Icon className='menu-item-icon-custom' type='user-add' />
                 {i18n.t('signup')}
               </Item>,
-              <Item key='signin' className='menu-item-text-custom'>
+              <Item key='signin' className='menu-item-text-custom' name='SIGNIN_BUTTON_OPEN_MODAL'>
                 <Icon className='menu-item-icon-custom' type='login' />
                 {i18n.t('signin')}
               </Item>

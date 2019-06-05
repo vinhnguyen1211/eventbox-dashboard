@@ -77,9 +77,10 @@ class SignInForm extends React.Component {
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form
-    const { loading } = this.state
-    const { i18n } = this.props
+    const {
+      props: { form: { getFieldDecorator }, i18n },
+      state: { loading }
+    } = this
     return (
       <div className='login-card__wrapper'>
         <Card headStyle={{ textAlign: 'center' }} title={i18n.t('signin')}>
@@ -95,7 +96,13 @@ class SignInForm extends React.Component {
                       message: 'Not correct format'
                     }
                   ]
-                })(<Input prefix={<Icon type='user' />} placeholder={i18n.t('usn-ph')} />)}
+                })(
+                  <Input
+                    prefix={<Icon type='user' />}
+                    placeholder={i18n.t('usn-ph')}
+                    name='SIGNIN_USERNAME_INPUT'
+                  />
+                )}
               </FormItem>
               <FormItem label={i18n.t('pwd')} colon={false} key='password'>
                 {getFieldDecorator('password', {
@@ -111,13 +118,14 @@ class SignInForm extends React.Component {
                     prefix={<Icon type='lock' />}
                     type='password'
                     placeholder={i18n.t('pwd-ph')}
+                    name='SIGNIN_PASSWORD_INPUT'
                   />
                 )}
               </FormItem>
               <FormItem>
                 <Row>
                   <Col span={11}>
-                    <Button type='primary' block htmlType='submit'>
+                    <Button type='primary' block htmlType='submit' name='SIGNIN_BUTTON'>
                       <Icon type='login' />
                       {i18n.t('Login')}
                     </Button>

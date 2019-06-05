@@ -1,0 +1,25 @@
+{
+  "viewportWidth": 1366,
+  "viewportHeight": 768,
+
+  "admin": "admin",
+  "adminPassword": "123",
+  "adminDisplayName": "admin | Admin@gmail.com",
+
+  "host": "host",
+  "hostPassword": "123",
+  "hostDisplayName": "host | host@gmail.com",
+
+  "user": "user",
+  "userPassword": "123",
+  "userDisplayName": "user | user@ya.co",
+
+  "wait": 500,
+  "waitdata": 1000,
+
+  "clearApp": true,
+  "clearInternals": true,
+  "clearCookies": false,
+  "clearLocalStorage": false,
+  "clearSessionStorage": false
+}
