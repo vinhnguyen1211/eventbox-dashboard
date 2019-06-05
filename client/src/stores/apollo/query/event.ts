@@ -50,8 +50,8 @@ const GET_EVENTS_HOMEPAGE = gql`
 `
 
 const GET_EVENT_DETAIL = gql`
-  query($eventId: ID!) {
-    event(id: $eventId) {
+  query($eventId: ID!, $forUpdate: Boolean) {
+    event(id: $eventId, forUpdate: $forUpdate) {
       id
       title
       description
@@ -122,13 +122,15 @@ const COUNT_EVENT_BY_TYPE = gql`
 const EVENTS_FOR_SEARCH = gql`
   query {
     eventsForSearch {
-      id title slug
+      id
+      title
+      slug
     }
   }
 `
 
 const EVENTS_BY_KEYWORDS = gql`
-  query ($keywords: String!) {
+  query($keywords: String!) {
     eventsByKeywords(keywords: $keywords) {
       id
       title

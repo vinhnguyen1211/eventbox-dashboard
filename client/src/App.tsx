@@ -107,36 +107,25 @@ const App = (props: withSessionProps) => {
     )
   }
 
+  const renderSignIn = () => <SignInPage refetch={refetch} session={session} />
+  const renderHome = () => <Landing refetch={refetch} session={session} />
+  const renderEventDetail = () => <LandingEventDetail refetch={refetch} session={session} />
+  const renderDashboard = () => {
+    if (session && session.me) {
+      return <DashboardContainer session={session} {...props} />
+    } else {
+      return <SignInPage refetch={refetch} session={session} />
+    }
+  }
+
   return (
     <Router history={history}>
       <Switch>
         <Route exact path={routes.SIGN_UP} component={() => <SignUpPage refetch={refetch} />} />
-        <Route
-          exact
-          path={routes.SIGN_IN}
-          component={() => <SignInPage refetch={refetch} session={session} />}
-        />
-        <Route
-          exact
-          path={routes.HOME}
-          render={() => <Landing refetch={refetch} session={session} />}
-        />
-        <Route
-          exact
-          path={`${routes.EVENT}/:eventId`}
-          render={() => <LandingEventDetail refetch={refetch} session={session} />}
-        />
-        <Route
-          exact
-          path={`${routes.DASHBOARD}*`}
-          render={(props) =>
-            session && session.me ? (
-              <DashboardContainer session={session} {...props} />
-            ) : (
-              <SignInPage refetch={refetch} session={session} />
-            )
-          }
-        />
+        <Route exact path={routes.SIGN_IN} component={renderSignIn} />
+        <Route exact path={routes.HOME} component={renderHome} />
+        <Route exact path={`${routes.EVENT}/:eventId`} component={renderEventDetail} />
+        <Route exact path={`${routes.DASHBOARD}*`} render={renderDashboard} />
         <Route component={Page404} />
       </Switch>
     </Router>

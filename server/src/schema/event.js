@@ -77,7 +77,7 @@ export default gql`
     events(status: String, cursor: String, limit: Int): EventConnection!
     eventsHome(limit: Int): [Event]
     eventsInReview(page: Int, limit: Int): EventReviewConnection!
-    event(id: ID!): Event
+    event(id: ID!, forUpdate: Boolean): Event
     countEventByType: countResult
     eventsForSearch: [Event]
     eventsByKeywords(keywords: String!): [Event]

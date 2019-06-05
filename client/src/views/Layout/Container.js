@@ -38,9 +38,14 @@ class Container extends React.Component {
   render() {
     const {
       session: { me },
-      t
+      t,
+      location
     } = this.props
     // console.log('t: ', t)
+    let defaultSelected = ['1']
+    if (location && location.pathname === '/dashboard') {
+      defaultSelected = ['Announcement']
+    }
 
     return (
       <Layout style={{ minHeight: '100vh' }}>
@@ -51,7 +56,12 @@ class Container extends React.Component {
           onCollapse={this.onCollapse}
         >
           <div className='layout-logo__wrapper' onClick={this.handleGotoHome} />
-          <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
+          <Menu
+            theme='dark'
+            defaultSelectedKeys={defaultSelected}
+            defaultOpenKeys={['My account', 'Events']}
+            mode='inline'
+          >
             {routesMenu
               .filter((route) => {
                 if (route.title === 'Departments') {

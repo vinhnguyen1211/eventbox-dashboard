@@ -14,6 +14,7 @@ const EventsWrapper = () => (
     )}
   </Query>
 )
+
 @withModal
 class EventList extends Component {
   state = {
@@ -111,67 +112,72 @@ class EventList extends Component {
       {
         title: 'Action',
         dataIndex: 'action',
-        render: (_, row) => [
-          // <Popover
-          //   key='publish'
-          //   style={{ paddingTop: 50 }}
-          //   content={<DepartmentSelection eventId={row.id} />}
-          //   title='Danh sách Khoa'
-          //   placement='topLeft'
-          //   trigger='click'
-          //   overlayClassName='deaprtment-selection-custom__wrapper'
-          // >
+        render: (_, row) => {
+          const openDepartment = () => {
+            this.handleOpenDepartments(row)
+          }
+          return [
+            // <Popover
+            //   key='publish'
+            //   style={{ paddingTop: 50 }}
+            //   content={<DepartmentSelection eventId={row.id} />}
+            //   title='Danh sách Khoa'
+            //   placement='topLeft'
+            //   trigger='click'
+            //   overlayClassName='deaprtment-selection-custom__wrapper'
+            // >
 
-          // </Popover>,
-          <Tooltip title='Publish this event' key='publish'>
-            <Icon
-              type='solution'
-              className='icon-primary-custom__wrapper'
-              style={{ margin: '0 8px' }}
-              onClick={() => this.handleOpenDepartments(row)}
-            />
-          </Tooltip>,
-          <Mutation
-            key='delete'
-            mutation={event.DELETE_EVENT_BYID}
-            variables={{ id: row.id }}
-            update={(cache, { data: { deleteEvent } }) => {
-              if (!deleteEvent) {
-                return alert('Failed to delete')
-              }
-              message.success('Delete event successfully!')
-              const data = cache.readQuery({
-                query: event.GET_PAGINATED_EVENTS_WITH_USERS
-              })
-
-              cache.writeQuery({
-                query: event.GET_PAGINATED_EVENTS_WITH_USERS,
-                data: {
-                  ...data,
-                  events: {
-                    ...data.events,
-                    edges: data.events.edges.filter((node) => node.id !== row.id),
-                    pageInfo: data.events.pageInfo
-                  }
+            // </Popover>,
+            <Tooltip title='Publish this event' key='publish'>
+              <Icon
+                type='solution'
+                className='icon-primary-custom__wrapper'
+                style={{ margin: '0 8px' }}
+                onClick={openDepartment}
+              />
+            </Tooltip>,
+            <Mutation
+              key='delete'
+              mutation={event.DELETE_EVENT_BYID}
+              variables={{ id: row.id }}
+              update={(cache, { data: { deleteEvent } }) => {
+                if (!deleteEvent) {
+                  return alert('Failed to delete')
                 }
-              })
-            }}
-          >
-            {(deleteEvent, { data, loading, error }) => (
-              <Popconfirm
-                placement='topRight'
-                title='Are you sure to delete this event'
-                onConfirm={deleteEvent}
-                okText='Yes'
-                cancelText='No'
-              >
-                <Tooltip title='Delete this event'>
-                  <Icon type='delete' className='icon-primary-custom__wrapper' />
-                </Tooltip>
-              </Popconfirm>
-            )}
-          </Mutation>
-        ]
+                message.success('Delete event successfully!')
+                const data = cache.readQuery({
+                  query: event.GET_PAGINATED_EVENTS_WITH_USERS
+                })
+
+                cache.writeQuery({
+                  query: event.GET_PAGINATED_EVENTS_WITH_USERS,
+                  data: {
+                    ...data,
+                    events: {
+                      ...data.events,
+                      edges: data.events.edges.filter((node) => node.id !== row.id),
+                      pageInfo: data.events.pageInfo
+                    }
+                  }
+                })
+              }}
+            >
+              {(deleteEvent, { data, loading, error }) => (
+                <Popconfirm
+                  placement='topRight'
+                  title='Are you sure to delete this event'
+                  onConfirm={deleteEvent}
+                  okText='Yes'
+                  cancelText='No'
+                >
+                  <Tooltip title='Delete this event'>
+                    <Icon type='delete' className='icon-primary-custom__wrapper' />
+                  </Tooltip>
+                </Popconfirm>
+              )}
+            </Mutation>
+          ]
+        }
       }
     ]
   }
