@@ -28,8 +28,9 @@ class EventUpdate extends Component {
       stores: { event }
     } = this.props
     event.editorEventCreate = EditorState.createEmpty()
-    const { error, event: eventDetail } = await event.getEventById(eventId)
+    const { error, event: eventDetail } = await event.getEventById(eventId, true)
     if (error) {
+      this.props.history.replace('/dashboard/events')
       return message.error(error)
     }
     form.setFieldsValue({

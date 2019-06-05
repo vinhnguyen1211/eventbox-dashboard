@@ -2,7 +2,7 @@ import { combineResolvers } from 'graphql-resolvers'
 import mongoose from 'mongoose'
 import { isAuthenticated, isEventOwner, isAdmin } from './authorization'
 import { EVENTS } from '../subscription'
-import { ApolloError } from 'apollo-server'
+import { ApolloError, ForbiddenError } from 'apollo-server'
 import uuidV4 from 'uuid/v4'
 import rp from 'request-promise'
 
@@ -131,7 +131,14 @@ export default {
     event: combineResolvers(
       // TODO: authorization handling, open for temporarily
       // isEventOwner,
-      async (parent, { id }, { me, models }) => {
+      async (parent, { id, forUpdate = false }, { me, models, isAdmin }) => {
+        if (forUpdate && !isAdmin) {
+          const event = await models.Event.findById(id)
+          if (event.userId.toString() !== me.id) {
+            throw new ForbiddenError('Not authenticated as owner.')
+          }
+          return event
+        }
         return await models.Event.findById(id)
       }
     ),
