@@ -66,5 +66,11 @@
   "Follow us": "Follow us",
   "registerEvent": "Register Event",
   "Role": "Role",
-  "Department": "Department"
+  "Department": "Department",
+  "sidebar_Announcement": "Announcement",
+  "sidebar_Administration": "Administration",
+  "sidebar_MyAccount": "My Account",
+  "sidebar_Departments": "Departments",
+  "sidebar_Events": "Events",
+  "sidebar_EventsApproval": "Approval Events"
 }

@@ -38,14 +38,9 @@ class Container extends React.Component {
   render() {
     const {
       session: { me },
-      t,
-      location
+      t
     } = this.props
     // console.log('t: ', t)
-    let defaultSelected = ['1']
-    if (location && location.pathname === '/dashboard') {
-      defaultSelected = ['Announcement']
-    }
 
     return (
       <Layout style={{ minHeight: '100vh' }}>
@@ -56,12 +51,7 @@ class Container extends React.Component {
           onCollapse={this.onCollapse}
         >
           <div className='layout-logo__wrapper' onClick={this.handleGotoHome} />
-          <Menu
-            theme='dark'
-            defaultSelectedKeys={defaultSelected}
-            defaultOpenKeys={['My account', 'Events']}
-            mode='inline'
-          >
+          <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
             {routesMenu
               .filter((route) => {
                 if (route.title === 'Departments') {
@@ -76,14 +66,14 @@ class Container extends React.Component {
               })
               .map((item) => {
                 if (item.subComponent) {
-                  if (item.title === 'Departments') {
+                  if (item.key === 'departments') {
                     return (
                       <SubMenu
-                        key={item.title}
+                        key={item.key}
                         title={
                           <span>
                             <Icon type={item.icon} />
-                            <span>{item.title}</span>
+                            <span>{t(item.title)}</span>
                           </span>
                         }
                       >
@@ -100,7 +90,7 @@ class Container extends React.Component {
                   } else {
                     return (
                       <SubMenu
-                        key={item.title}
+                        key={item.key}
                         title={
                           <span>
                             <Icon type={item.icon} />
