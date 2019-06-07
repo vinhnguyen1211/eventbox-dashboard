@@ -51,6 +51,7 @@ class FormAddUser extends Component<
           const msg = graphQLErrors && graphQLErrors.map((item: any) => item.message).join(', ')
           return message.error(msg)
         }
+        /* eslint-disable */
         const { user } = result.data.inviteMember
         message.success('Thêm thành viên mới thành công!')
         onClose()
@@ -101,7 +102,7 @@ class FormAddUser extends Component<
             </Item>
           )
         })}
-        <Item key={name} colon={false} {...ITEM_LAYOUT}>
+        <Item key='button_confirm' colon={false} {...ITEM_LAYOUT}>
           <Row type='flex' justify='center'>
             <Button htmlType='submit' type='primary'>
               Xác nhận

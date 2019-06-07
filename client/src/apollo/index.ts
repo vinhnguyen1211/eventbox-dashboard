@@ -6,11 +6,10 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
-const { createUploadLink } = require('apollo-upload-client')
-
 import { signOut } from '@components'
 import typeDefs from './typeDefs'
 import resolvers from './resolvers'
+const { createUploadLink } = require('apollo-upload-client')
 
 // const prodMode = process.env.NODE_ENV === 'production'
 
