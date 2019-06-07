@@ -54,7 +54,7 @@ class Container extends React.Component {
           <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
             {routesMenu
               .filter((route) => {
-                if (route.title === 'Departments') {
+                if (route.key === 'departments') {
                   return me.departments.length > 0
                 }
                 for (let role of me.role) {

@@ -78,5 +78,8 @@
   "sidebar_MyAccount": "Tài khoản",
   "sidebar_Departments": "Phòng Khoa",
   "sidebar_Events": "Sự kiện",
-  "sidebar_EventsApproval": "Duyệt sự kiện"
+  "sidebar_EventsApproval": "Duyệt sự kiện",
+  "ActionEventLog_CreateEvent": "Tạo sự kiện",
+  "ActionEventLog_RejectEvent": "Từ chối duyệt sự kiện",
+  "ActionEventLogReason": "Lý do"
 }

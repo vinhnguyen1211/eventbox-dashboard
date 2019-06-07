@@ -148,6 +148,20 @@ const EVENTS_BY_KEYWORDS = gql`
   }
 `
 
+const GET_EVENT_LOGS = gql`
+  query($eventId: ID!) {
+    eventLogs(eventId: $eventId) {
+      userInfo {
+        photo
+      }
+      userEmail
+      action
+      subjectText
+      updatedAt
+    }
+  }
+`
+
 export {
   GET_PAGINATED_EVENTS_WITH_USERS,
   GET_EVENTS_HOMEPAGE,
@@ -155,5 +169,6 @@ export {
   GET_EVENTS_INREVIEW,
   COUNT_EVENT_BY_TYPE,
   EVENTS_FOR_SEARCH,
-  EVENTS_BY_KEYWORDS
+  EVENTS_BY_KEYWORDS,
+  GET_EVENT_LOGS
 }

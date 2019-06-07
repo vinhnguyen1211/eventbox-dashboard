@@ -72,5 +72,8 @@
   "sidebar_MyAccount": "My Account",
   "sidebar_Departments": "Departments",
   "sidebar_Events": "Events",
-  "sidebar_EventsApproval": "Approval Events"
+  "sidebar_EventsApproval": "Approval Events",
+  "ActionEventLog_CreateEvent": "Create event",
+  "ActionEventLog_RejectEvent": "Reject event",
+  "ActionEventLogReason": "Reason"
 }

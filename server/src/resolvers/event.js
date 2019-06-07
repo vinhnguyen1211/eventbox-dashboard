@@ -241,19 +241,21 @@ export default {
   Mutation: {
     createEvent: combineResolvers(isAuthenticated, async (parent, args, { models, me }) => {
       const { thumbnail, ...rest } = args
-      const event = await models.Event.create({
+      const event = new models.Event({
         ...rest,
         images: {
           thumbnail
         },
         userId: me.id
       })
+      const symbol = Symbol.for('userEmail')
+      event[symbol] = me.email
 
       // pubsub.publish(EVENTS.EVENT.CREATED, {
       //   eventCreated: { event }
       // })
 
-      return event
+      return await event.save()
     }),
     updateEvent: combineResolvers(isEventOwner, async (parent, args, { models, me }) => {
       const { id, thumbnail, ...rest } = args
@@ -335,14 +337,23 @@ export default {
     rejectEvent: combineResolvers(
       // TODO: authenticate by review-er role
       // isEventOwner,
-      async (parent, { id }, { models }) => {
+      async (parent, { id, comment }, { models, me }) => {
         try {
           const { errors } = await models.Event.findByIdAndUpdate(id, {
             status: 'rejected'
           })
+
           if (errors) {
             return false
           }
+          const log = new models.EventLog({
+            userId: me.id,
+            userEmail: me.email,
+            eventId: id,
+            action: 'RejectEvent',
+            subjectText: comment
+          })
+          log.save()
         } catch (error) {
           return false
         }
