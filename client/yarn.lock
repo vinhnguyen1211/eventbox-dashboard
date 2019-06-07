@@ -1945,15 +1945,15 @@ address@1.0.3, address@^1.0.1:
   resolved "https://registry.yarnpkg.com/address/-/address-1.0.3.tgz#b5f50631f8d6cec8bd20c963963afb55e06cbce9"
   integrity sha512-z55ocwKBRLryBs394Sm3ushTtBeg6VAeuku7utSoSnsJKvKcnXFIyC6vh27n3rXyxSgkJBBCAvyOn7gSUcTYjg==
 
-ag-grid-community@^20.2.0:
-  version "20.2.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-20.2.0.tgz#22f26d53e309b51a156878d180c9ec6f16bc6403"
-  integrity sha512-3oAzg58lenhpyIfZ6dBp6cCE+PEoh0N+OSci2+k5fHROn8PMrginAkygONDd068E2NC+qfmDNRkU2WjPgiH/BA==
+ag-grid-community@^21.0.1:
+  version "21.0.1"
+  resolved "https://registry.yarnpkg.com/ag-grid-community/-/ag-grid-community-21.0.1.tgz#8cf6096de7e9ae6144bf5aced89b03814ea7b034"
+  integrity sha512-wqm6W39kImPonjRxHvnt/L6roJLxPXSopXF4pvcE1paxN7S25HNsBgTOB1uaLlQ4/xt3xSpccPbTDqVUnSxrmQ==
 
-ag-grid-react@^20.2.0:
-  version "20.2.0"
-  resolved "https://registry.yarnpkg.com/ag-grid-react/-/ag-grid-react-20.2.0.tgz#b2fd24950a31fc491a1c79ce92657b8aa7582c45"
-  integrity sha512-rXyCcmxWNfLactMYqM8KCv9t2qp+6gUd/bsw7bBKZ7m8F7lFsibAb+WMg39iOWZYuYRijrXUtO36yVcot3hmjg==
+ag-grid-react@^21.0.1:
+  version "21.0.1"
+  resolved "https://registry.yarnpkg.com/ag-grid-react/-/ag-grid-react-21.0.1.tgz#99cba1db66710d071e19870da64ffe89d5bd4dd9"
+  integrity sha512-r6YRH9QQsU5t01w16QK6DFJNNhg1r9Zk92FcyCSQ/vRVYrD2rYrA8s//cpvMSAajCh7aKNsssHP6uYSrnkM7Fw==
   dependencies:
     prop-types "^15.6.2"
 
@@ -4450,7 +4450,7 @@ eslint-module-utils@^2.3.0:
     debug "^2.6.8"
     pkg-dir "^2.0.0"
 
-eslint-plugin-es@^1.3.1:
+eslint-plugin-es@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/eslint-plugin-es/-/eslint-plugin-es-1.4.0.tgz#475f65bb20c993fc10e8c8fe77d1d60068072da6"
   integrity sha512-XfFmgFdIUDgvaRAlaXUkxrRg5JSADoRC8IkKLc/cISeR3yHVMefFHQZpcyXXEUUPHfy5DwviBcrfqlyqEwlQVw==
@@ -4495,17 +4495,17 @@ eslint-plugin-jsx-a11y@6.2.1:
     has "^1.0.3"
     jsx-ast-utils "^2.0.1"
 
-eslint-plugin-node@^8.0.0:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-node/-/eslint-plugin-node-8.0.1.tgz#55ae3560022863d141fa7a11799532340a685964"
-  integrity sha512-ZjOjbjEi6jd82rIpFSgagv4CHWzG9xsQAVp1ZPlhRnnYxcTgENUVBvhYmkQ7GvT1QFijUSo69RaiOJKhMu6i8w==
+eslint-plugin-node@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-node/-/eslint-plugin-node-9.1.0.tgz#f2fd88509a31ec69db6e9606d76dabc5adc1b91a"
+  integrity sha512-ZwQYGm6EoV2cfLpE1wxJWsfnKUIXfM/KM09/TlorkukgCAwmkgajEJnPCmyzoFPQQkmvo5DrW/nyKutNIw36Mw==
   dependencies:
-    eslint-plugin-es "^1.3.1"
+    eslint-plugin-es "^1.4.0"
     eslint-utils "^1.3.1"
-    ignore "^5.0.2"
+    ignore "^5.1.1"
     minimatch "^3.0.4"
-    resolve "^1.8.1"
-    semver "^5.5.0"
+    resolve "^1.10.1"
+    semver "^6.1.0"
 
 eslint-plugin-promise@^4.1.1:
   version "4.1.1"
@@ -5749,10 +5749,10 @@ i18next-browser-languagedetector@^3.0.1:
   resolved "https://registry.yarnpkg.com/i18next-browser-languagedetector/-/i18next-browser-languagedetector-3.0.1.tgz#a47c43176e8412c91e808afb7c6eb5367649aa8e"
   integrity sha512-WFjPLNPWl62uu07AHY2g+KsC9qz0tyMq+OZEB/H7N58YKL/JLiCz9U709gaR20Mule/Ppn+uyfVx5REJJjn1HA==
 
-i18next@^15.0.9:
-  version "15.0.9"
-  resolved "https://registry.yarnpkg.com/i18next/-/i18next-15.0.9.tgz#42536407a921bb5a8535a4c090a26f16827a1884"
-  integrity sha512-IdVj7DqErUuMbGuj2dFT431T7zKlmDci63eae6pNA/bMwgBZKT74/KnwHXE0WH7ivo2EV/LNme4pP4Yw6vB79w==
+i18next@^17.0.3:
+  version "17.0.3"
+  resolved "https://registry.yarnpkg.com/i18next/-/i18next-17.0.3.tgz#82d67826d13e8ca2cd2a3c87871533414e952d03"
+  integrity sha512-vQyW6a4ZLt3Dxnd6GXSnhbW5DwGYC4uLPKk1MFE5pfFbR9CEiNatdwwUZDQfrcNOh2x0eOGDFYeCEyLlkLvDQA==
   dependencies:
     "@babel/runtime" "^7.3.1"
 
@@ -5816,10 +5816,10 @@ ignore@^4.0.6:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
   integrity sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==
 
-ignore@^5.0.2:
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.0.5.tgz#c663c548d6ce186fb33616a8ccb5d46e56bdbbf9"
-  integrity sha512-kOC8IUb8HSDMVcYrDVezCxpJkzSQWTAzf3olpKM6o9rM5zpojx23O0Fl8Wr4+qJ6ZbPEHqf1fdwev/DS7v7pmA==
+ignore@^5.1.1:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.1.2.tgz#e28e584d43ad7e92f96995019cc43b9e1ac49558"
+  integrity sha512-vdqWBp7MyzdmHkkRWV5nY+PfGRbYbahfuvsBCh277tq+w9zyNi7h5CYJCK0kmzti9kU+O/cB7sE8HvKv6aXAKQ==
 
 image-size@~0.5.0:
   version "0.5.5"
@@ -7074,14 +7074,14 @@ left-pad@^1.3.0:
   resolved "https://registry.yarnpkg.com/left-pad/-/left-pad-1.3.0.tgz#5b8a3a7765dfe001261dde915589e782f8c94d1e"
   integrity sha512-XI5MPzVNApjAyhQzphX8BkmKsKUxD4LdyK24iZeQGinBN9yTQT3bFlCBy/aVx2HrNcqQGsdot8ghrjyrvMCoEA==
 
-less-loader@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/less-loader/-/less-loader-4.1.0.tgz#2c1352c5b09a4f84101490274fd51674de41363e"
-  integrity sha512-KNTsgCE9tMOM70+ddxp9yyt9iHqgmSs0yTZc5XH5Wo+g80RWRIYNqE58QJKm/yMud5wZEvz50ugRDuzVIkyahg==
+less-loader@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/less-loader/-/less-loader-5.0.0.tgz#498dde3a6c6c4f887458ee9ed3f086a12ad1b466"
+  integrity sha512-bquCU89mO/yWLaUq0Clk7qCsKhsF/TZpJUzETRvJa9KSVEL9SO3ovCvdEHISBhrC81OwC8QSVX7E0bzElZj9cg==
   dependencies:
     clone "^2.1.1"
     loader-utils "^1.1.0"
-    pify "^3.0.0"
+    pify "^4.0.1"
 
 less@^3.9.0:
   version "3.9.0"
@@ -9889,10 +9889,10 @@ rc-rate@~2.5.0:
     rc-util "^4.3.0"
     react-lifecycles-compat "^3.0.4"
 
-rc-scroll-anim@^2.5.7:
-  version "2.5.7"
-  resolved "https://registry.yarnpkg.com/rc-scroll-anim/-/rc-scroll-anim-2.5.7.tgz#539616636028e1f12e9f4dfa2af5812c67dab647"
-  integrity sha512-REL3NjdH15Wo4PnbcpoPc19Nx5kScwkn3wNA+ytYBF4S53PjaLF2S8eFANLxZOYIruLoHIp+5Flu09XAPRIP7A==
+rc-scroll-anim@^2.5.8:
+  version "2.5.8"
+  resolved "https://registry.yarnpkg.com/rc-scroll-anim/-/rc-scroll-anim-2.5.8.tgz#f20bbe4787782f0a440cefea2bafd3557e4c33d1"
+  integrity sha512-F7DKz4FgYhHRI8kxpXeGFNV1yQN8Rlavxp7oRdMxqaqSGpqJxeZou/RSTdMYmmoCqeVsLXuA5zqVWEhmbNLkHA==
   dependencies:
     babel-runtime "6.x"
     prop-types "^15.6.0"
@@ -10077,6 +10077,17 @@ rc-tween-one@^2.4.0:
     style-utils "~0.2.0"
     tween-functions "~1.2.0"
 
+rc-tween-one@^2.4.1:
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/rc-tween-one/-/rc-tween-one-2.4.1.tgz#04354c59b0cf2cf5fab583b27878b9d6af23dcc3"
+  integrity sha512-sIHQtPIxN9sSc+rFG/niqQEZKsqo/kSNvLa3WM4imDTJ7HXOFU5MDeY8l0f+TwotbyyzTlpUCWo1mTQsj7b8XA==
+  dependencies:
+    babel-runtime "6.x"
+    prop-types "^15.6.1"
+    raf "~3.4.0"
+    style-utils "~0.2.0"
+    tween-functions "~1.2.0"
+
 rc-upload@~2.6.0:
   version "2.6.3"
   resolved "https://registry.yarnpkg.com/rc-upload/-/rc-upload-2.6.3.tgz#99f0f4b948e82c71280a507399ee4bf2fc16b440"
@@ -10107,10 +10118,10 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-alice-carousel@^1.13.11:
-  version "1.13.11"
-  resolved "https://registry.yarnpkg.com/react-alice-carousel/-/react-alice-carousel-1.13.11.tgz#f0b3af202b435a6cc254fcb37582f760c6cbfec7"
-  integrity sha512-0orHSaqkoCQBKJ2oeZ7gx/+nez1DrIG4HLXXsmHDde6wf9PsOI+GPFvI8ha9fEuivgedlmCLZ3zg+z/YPxnexA==
+react-alice-carousel@^1.13.14:
+  version "1.13.14"
+  resolved "https://registry.yarnpkg.com/react-alice-carousel/-/react-alice-carousel-1.13.14.tgz#d0f9553fdc2adaa0691ca28f3bb98d889e13f430"
+  integrity sha512-4aqVsHq7R7ozBMWdmpoAgzEF9xyqp8W39ZJwQmIP1c7/xTCXy5xxM95pH3jUi6TspyDNLjMpkAZruRfDMSbTnQ==
   dependencies:
     prop-types "^15.5.10"
     react-swipeable "4.3.0"
@@ -10781,7 +10792,7 @@ resolve@1.10.0, resolve@^1.3.2, resolve@^1.5.0, resolve@^1.8.1, resolve@^1.9.0:
   dependencies:
     path-parse "^1.0.6"
 
-resolve@^1.10.0:
+resolve@^1.10.0, resolve@^1.10.1:
   version "1.11.1"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.11.1.tgz#ea10d8110376982fef578df8fc30b9ac30a07a3e"
   integrity sha512-vIpgF6wfuJOZI7KKKSP+HmiKggadPQAdsp5HiC1mvqnfp0gF1vdwgBWZIdrVft9pgqoMFQN+R7BSWZiBxx+BBw==

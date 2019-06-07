@@ -1,6 +1,6 @@
 import React from 'react'
 import client from '../../apollo'
-import { Route, Switch, Link } from 'react-router-dom'
+import { Route, Switch, Link, withRouter } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb, Icon, Card } from 'antd'
 import { routesComp, routesMenu } from './routes'
 import Page404 from '../../Page/404'
@@ -154,4 +154,4 @@ class Container extends React.Component {
   }
 }
 
-export default withTranslation()(Container)
+export default withTranslation()(withRouter(Container))
