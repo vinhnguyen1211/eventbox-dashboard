@@ -279,21 +279,21 @@ class RejectButton extends Component {
       handleRejct(rejectEvent)
     }
 
-    this.setState({ comment: '' }, () => {
-      modal.show({
-        title: t('Rejection feedback'),
-        body: (
-          <Input.TextArea
-            onChange={handleChange}
-            placeholder='Reason of why is event was rejected'
-          />
-        ),
-        footer: (
-          <Button type='primary' onClick={reject}>
-            SUBMIT
-          </Button>
-        )
-      })
+    modal.show({
+      title: t('Rejection feedback'),
+      body: (
+        <Input.TextArea
+          onChange={handleChange}
+          placeholder='Reason of why is event was rejected'
+          autosize={{ minRows: 5 }}
+          defaultValue={comment}
+        />
+      ),
+      footer: (
+        <Button type='primary' onClick={reject}>
+          SUBMIT
+        </Button>
+      )
     })
   }
 
