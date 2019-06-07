@@ -107,6 +107,7 @@ const App = (props: withSessionProps) => {
     )
   }
 
+  const renderSignUp = () => <SignUpPage refetch={refetch} />
   const renderSignIn = () => <SignInPage refetch={refetch} session={session} />
   const renderHome = () => <Landing refetch={refetch} session={session} />
   const renderEventDetail = () => <LandingEventDetail refetch={refetch} session={session} />
@@ -121,10 +122,10 @@ const App = (props: withSessionProps) => {
   return (
     <Router history={history}>
       <Switch>
-        <Route exact path={routes.SIGN_UP} component={() => <SignUpPage refetch={refetch} />} />
+        <Route exact path={routes.SIGN_UP} component={renderSignUp} />
         <Route exact path={routes.SIGN_IN} component={renderSignIn} />
-        <Route exact path={routes.HOME} component={renderHome} />
-        <Route exact path={`${routes.EVENT}/:eventId`} component={renderEventDetail} />
+        <Route exact path={routes.HOME} render={renderHome} />
+        <Route exact path={`${routes.EVENT}/:eventId`} render={renderEventDetail} />
         <Route exact path={`${routes.DASHBOARD}*`} render={renderDashboard} />
         <Route component={Page404} />
       </Switch>
