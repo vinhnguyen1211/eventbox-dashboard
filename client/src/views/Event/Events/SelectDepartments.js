@@ -11,7 +11,11 @@ export default class SelectDepartments extends Component {
   }
 
   selectDepartments = (departmentIds) => {
-    this.setState({ departmentIds })
+    const [, id] = departmentIds
+    // console.log('props: ', this.props.value)
+    // console.log('departmentIds: ', departmentIds)
+    // console.log('id: ', id)
+    this.setState({ departmentIds: [id] })
   }
 
   render() {
