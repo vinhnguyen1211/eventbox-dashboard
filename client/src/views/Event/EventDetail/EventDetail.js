@@ -33,7 +33,14 @@ class EventDetailReview extends Component {
         variables: { eventId, forUpdate: true }
       })
     } catch (error) {
-      return message.error('Failed to fetch event')
+      let msg = 'Failed to fetch event'
+      const { graphQLErrors } = error
+      if(graphQLErrors){
+        const [{message}] = graphQLErrors
+        msg = message
+      }
+      this.props.history.replace('/dashboard/events')
+      return message.error(msg)
     }
     this.setState({
       event: result.data.event,

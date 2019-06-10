@@ -50,8 +50,8 @@ const GET_EVENTS_HOMEPAGE = gql`
 `
 
 const GET_EVENT_DETAIL = gql`
-  query($eventId: ID!, $forUpdate: Boolean) {
-    event(id: $eventId, forUpdate: $forUpdate) {
+  query($eventId: ID!, $forUpdate: Boolean, $forHome: Boolean) {
+    event(id: $eventId, forUpdate: $forUpdate, forHome: $forHome) {
       id
       title
       description

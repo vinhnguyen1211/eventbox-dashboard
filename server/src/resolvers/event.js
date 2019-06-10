@@ -131,15 +131,22 @@ export default {
     event: combineResolvers(
       // TODO: authorization handling, open for temporarily
       // isEventOwner,
-      async (parent, { id, forUpdate = false }, { me, models, isAdmin }) => {
-        if (forUpdate && !isAdmin) {
-          const event = await models.Event.findById(id)
-          if (event.userId.toString() !== me.id) {
+      async (parent, { id, forUpdate = false, forHome = false }, { me, models, isAdmin }) => {
+        const event = await models.Event.findById(id)
+
+        if (forHome) {
+          if (event.status !== 'active') {
+            throw new ForbiddenError('Event is not found')
+          }
+          return event
+        } else if (forUpdate) {
+          if (!isAdmin && event.userId.toString() !== me.id) {
             throw new ForbiddenError('Not authenticated as owner.')
           }
           return event
         }
-        return await models.Event.findById(id)
+
+        return null
       }
     ),
 
@@ -216,6 +223,9 @@ export default {
             startTime: {
               $lte: now.setMonth(thisMonth + 3)
             }
+          },
+          {
+            status: 'active'
           }
         ]
       })
@@ -224,7 +234,8 @@ export default {
     eventsByKeywords: async (parent, { keywords }, { models }) => {
       const regex = new RegExp(`.*${keywords}.*`, 'i')
       return await models.Event.find({
-        title: { $regex: regex }
+        title: { $regex: regex },
+        status: 'active'
       })
     },
 
