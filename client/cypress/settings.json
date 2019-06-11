@@ -1,6 +1,8 @@
 {
   "viewportWidth": 1366,
   "viewportHeight": 768,
+  "devURL": "http://localhost:3000",
+  "URL": "https://eventvlu.tk",
 
   "admin": "admin",
   "adminPassword": "123",
