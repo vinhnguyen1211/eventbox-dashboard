@@ -1,7 +1,7 @@
 import React from 'react'
 import { useQuery } from 'react-apollo-hooks'
 import { user } from '@gqlQueries'
-import { Spin, Tabs, Card } from 'antd'
+import { Spin, Tabs } from 'antd'
 import DepartmentUsers from './DepartmetUsers'
 const { TabPane } = Tabs
 

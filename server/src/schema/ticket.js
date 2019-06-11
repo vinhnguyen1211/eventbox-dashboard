@@ -6,6 +6,8 @@ export default gql`
     userId: ID!
     eventId: ID!
     code: String
+    fullName: String
+    studentId: String
     ticketSvgSrc: String
     checkedIn: Boolean
     checkedInTime: Date

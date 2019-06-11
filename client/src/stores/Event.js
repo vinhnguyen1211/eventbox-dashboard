@@ -32,12 +32,12 @@ class Event {
   }
 
   @action
-  async getEventById(eventId) {
+  async getEventById(eventId, forUpdate = false) {
     let result
     try {
       result = await client.query({
         query: event.GET_EVENT_DETAIL,
-        variables: { eventId },
+        variables: { eventId, forUpdate },
         fetchPolicy: 'no-cache'
       })
     } catch ({ graphQLErrors }) {
@@ -71,7 +71,9 @@ class Event {
   @action
   async joinEvent(userId, eventId) {
     try {
-      const { data: { joinEvent } } = await client.mutate({
+      const {
+        data: { joinEvent }
+      } = await client.mutate({
         mutation: event.JOIN_EVENT,
         variables: { userId, eventId }
       })

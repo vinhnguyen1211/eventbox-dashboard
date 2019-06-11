@@ -50,8 +50,8 @@ const GET_EVENTS_HOMEPAGE = gql`
 `
 
 const GET_EVENT_DETAIL = gql`
-  query($eventId: ID!) {
-    event(id: $eventId) {
+  query($eventId: ID!, $forUpdate: Boolean, $forHome: Boolean) {
+    event(id: $eventId, forUpdate: $forUpdate, forHome: $forHome) {
       id
       title
       description
@@ -121,7 +121,44 @@ const COUNT_EVENT_BY_TYPE = gql`
 
 const EVENTS_FOR_SEARCH = gql`
   query {
-    eventsForSearch
+    eventsForSearch {
+      id
+      title
+      slug
+    }
+  }
+`
+
+const EVENTS_BY_KEYWORDS = gql`
+  query($keywords: String!) {
+    eventsByKeywords(keywords: $keywords) {
+      id
+      title
+      slug
+      status
+      images {
+        thumbnail
+      }
+      startTime
+      user {
+        id
+        username
+      }
+    }
+  }
+`
+
+const GET_EVENT_LOGS = gql`
+  query($eventId: ID!) {
+    eventLogs(eventId: $eventId) {
+      userInfo {
+        photo
+      }
+      userEmail
+      action
+      subjectText
+      updatedAt
+    }
   }
 `
 
@@ -131,5 +168,7 @@ export {
   GET_EVENT_DETAIL,
   GET_EVENTS_INREVIEW,
   COUNT_EVENT_BY_TYPE,
-  EVENTS_FOR_SEARCH
+  EVENTS_FOR_SEARCH,
+  EVENTS_BY_KEYWORDS,
+  GET_EVENT_LOGS
 }

@@ -68,5 +68,18 @@
   "Role": "Vai trò",
   "Department": "Khoa",
   "Announcement": "Thông báo",
-  "Using VanLang Account": "Tài khoản Văn Lang"
+  "Using VanLang Account": "Tài khoản Văn Lang",
+  "Number of users checked in": "Số lượng vé đã được checked-in",
+  "Your ticket code": "Mã số vé",
+  "You must log in to register a ticket": "Bạn cần phải đăng nhập để có thể đăng ký vé của sự kiện",
+  "Your ticket has been sent to your mailbox address": "Thông tin vé đã được gửi đến hộp thư của bạn",
+  "sidebar_Announcement": "Thông báo",
+  "sidebar_Administration": "Quản trị",
+  "sidebar_MyAccount": "Tài khoản",
+  "sidebar_Departments": "Phòng Khoa",
+  "sidebar_Events": "Sự kiện",
+  "sidebar_EventsApproval": "Duyệt sự kiện",
+  "ActionEventLog_CreateEvent": "Tạo sự kiện",
+  "ActionEventLog_RejectEvent": "Từ chối duyệt sự kiện",
+  "ActionEventLogReason": "Lý do"
 }

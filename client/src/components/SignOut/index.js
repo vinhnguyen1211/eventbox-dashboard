@@ -15,6 +15,19 @@ const SignOutButton = () => (
 )
 
 const signOut = async (client) => {
+  try {
+    /* eslint-disable */
+    const result = await fetch('/api/auth/logout', {
+      headers: {
+        'x-token': localStorage.getItem('token') || ''
+      },
+      method: 'POST'
+    }).then((res) => res.json())
+    // console.log('result: ', result)
+  } catch (error) {
+    // console.log('error: ', error)
+  }
+
   localStorage.setItem('token', '')
   await client.resetStore()
   // if (history.location.pathname !== routes.HOME) {

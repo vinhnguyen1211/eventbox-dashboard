@@ -1,6 +1,6 @@
 import React from 'react'
 import client from '../../apollo'
-import { Route, Switch, Link } from 'react-router-dom'
+import { Route, Switch, Link, withRouter } from 'react-router-dom'
 import { Layout, Menu, Breadcrumb, Icon, Card } from 'antd'
 import { routesComp, routesMenu } from './routes'
 import Page404 from '../../Page/404'
@@ -54,7 +54,7 @@ class Container extends React.Component {
           <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
             {routesMenu
               .filter((route) => {
-                if (route.title === 'Departments') {
+                if (route.key === 'departments') {
                   return me.departments.length > 0
                 }
                 for (let role of me.role) {
@@ -66,14 +66,14 @@ class Container extends React.Component {
               })
               .map((item) => {
                 if (item.subComponent) {
-                  if (item.title === 'Departments') {
+                  if (item.key === 'departments') {
                     return (
                       <SubMenu
-                        key={item.title}
+                        key={item.key}
                         title={
                           <span>
                             <Icon type={item.icon} />
-                            <span>{item.title}</span>
+                            <span>{t(item.title)}</span>
                           </span>
                         }
                       >
@@ -90,7 +90,7 @@ class Container extends React.Component {
                   } else {
                     return (
                       <SubMenu
-                        key={item.title}
+                        key={item.key}
                         title={
                           <span>
                             <Icon type={item.icon} />
@@ -154,4 +154,4 @@ class Container extends React.Component {
   }
 }
 
-export default withTranslation()(Container)
+export default withTranslation()(withRouter(Container))

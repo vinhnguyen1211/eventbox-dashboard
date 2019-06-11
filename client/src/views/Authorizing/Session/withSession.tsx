@@ -7,7 +7,7 @@ import { Skeleton } from 'antd'
 
 const withSession = (Component: React.ComponentType<any>) => (props: any) => (
   <Query query={session.GET_ME}>
-    {({ data, error, loading, refetch }) => {
+    {({ data, error, loading, refetch }: any) => {
       if (error) {
         return <Page404 />
       }

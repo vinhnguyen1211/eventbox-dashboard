@@ -2,7 +2,7 @@ import { combineResolvers } from 'graphql-resolvers'
 import mongoose from 'mongoose'
 import { isAuthenticated, isEventOwner, isAdmin } from './authorization'
 import { EVENTS } from '../subscription'
-import { ApolloError } from 'apollo-server'
+import { ApolloError, ForbiddenError } from 'apollo-server'
 import uuidV4 from 'uuid/v4'
 import rp from 'request-promise'
 
@@ -63,53 +63,56 @@ const fromCursorHash = (string) => Buffer.from(string, 'base64').toString('ascii
 
 export default {
   Query: {
-    events: async (parent, { status, cursor, limit = 50 }, { models, me, isAdmin }) => {
-      const cursorOptions = cursor
-        ? {
-            createdAt: {
-              $lt: fromCursorHash(cursor)
-            }
-          }
-        : {}
-      let selfEventsCondition
-      if (!status) {
-        selfEventsCondition = !isAdmin
+    events: combineResolvers(
+      isAuthenticated,
+      async (parent, { status, cursor, limit = 50 }, { models, me, isAdmin }) => {
+        const cursorOptions = cursor
           ? {
-              userId: me.id
+              createdAt: {
+                $lt: fromCursorHash(cursor)
+              }
             }
           : {}
-      } else {
-        selfEventsCondition = {
-          status
-        }
-      }
-
-      const events = await models.Event.find(
-        {
-          ...cursorOptions,
-          ...selfEventsCondition
-        },
-        null,
-        {
-          limit: limit + 1,
-          sort: {
-            createdAt: -1
+        let selfEventsCondition
+        if (!status) {
+          selfEventsCondition = !isAdmin
+            ? {
+                userId: me.id
+              }
+            : {}
+        } else {
+          selfEventsCondition = {
+            status
           }
         }
-      )
 
-      const hasNextPage = events.length > limit
-      const edges = hasNextPage ? events.slice(0, -1) : events
+        const events = await models.Event.find(
+          {
+            ...cursorOptions,
+            ...selfEventsCondition
+          },
+          null,
+          {
+            limit: limit + 1,
+            sort: {
+              createdAt: -1
+            }
+          }
+        )
 
-      return {
-        edges,
-        pageInfo: {
-          hasNextPage,
-          endCursor:
-            events.length > 0 ? toCursorHash(edges[edges.length - 1].createdAt.toString()) : ''
+        const hasNextPage = events.length > limit
+        const edges = hasNextPage ? events.slice(0, -1) : events
+
+        return {
+          edges,
+          pageInfo: {
+            hasNextPage,
+            endCursor:
+              events.length > 0 ? toCursorHash(edges[edges.length - 1].createdAt.toString()) : ''
+          }
         }
       }
-    },
+    ),
     eventsHome: async (parent, { limit = 8 }, { me, models }) => {
       const events = await models.Event.find(
         {
@@ -128,8 +131,22 @@ export default {
     event: combineResolvers(
       // TODO: authorization handling, open for temporarily
       // isEventOwner,
-      async (parent, { id }, { me, models }) => {
-        return await models.Event.findById(id)
+      async (parent, { id, forUpdate = false, forHome = false }, { me, models, isAdmin }) => {
+        const event = await models.Event.findById(id)
+
+        if (forHome) {
+          if (event.status !== 'active') {
+            throw new ForbiddenError('Event is not found')
+          }
+          return event
+        } else if (forUpdate) {
+          if (!isAdmin && event.userId.toString() !== me.id) {
+            throw new ForbiddenError('Not authenticated as owner.')
+          }
+          return event
+        }
+
+        return null
       }
     ),
 
@@ -193,11 +210,33 @@ export default {
     },
 
     eventsForSearch: async (parent, args, { models }) => {
+      const now = new Date()
+      const thisMonth = now.getMonth()
       return await models.Event.find({
-        startTime: {
-          $gte: new Date()
-        }
-      }).then((data) => data.map((e) => e.title))
+        $and: [
+          {
+            startTime: {
+              $gte: now.setMonth(thisMonth - 3)
+            }
+          },
+          {
+            startTime: {
+              $lte: now.setMonth(thisMonth + 3)
+            }
+          },
+          {
+            status: 'active'
+          }
+        ]
+      })
+    },
+
+    eventsByKeywords: async (parent, { keywords }, { models }) => {
+      const regex = new RegExp(`.*${keywords}.*`, 'i')
+      return await models.Event.find({
+        title: { $regex: regex },
+        status: 'active'
+      })
     },
 
     eventsForCheckin: combineResolvers(isAuthenticated, async (parent, args, { me, models }) => {
@@ -213,19 +252,21 @@ export default {
   Mutation: {
     createEvent: combineResolvers(isAuthenticated, async (parent, args, { models, me }) => {
       const { thumbnail, ...rest } = args
-      const event = await models.Event.create({
+      const event = new models.Event({
         ...rest,
         images: {
           thumbnail
         },
         userId: me.id
       })
+      const symbol = Symbol.for('userEmail')
+      event[symbol] = me.email
 
       // pubsub.publish(EVENTS.EVENT.CREATED, {
       //   eventCreated: { event }
       // })
 
-      return event
+      return await event.save()
     }),
     updateEvent: combineResolvers(isEventOwner, async (parent, args, { models, me }) => {
       const { id, thumbnail, ...rest } = args
@@ -307,14 +348,23 @@ export default {
     rejectEvent: combineResolvers(
       // TODO: authenticate by review-er role
       // isEventOwner,
-      async (parent, { id }, { models }) => {
+      async (parent, { id, comment }, { models, me }) => {
         try {
           const { errors } = await models.Event.findByIdAndUpdate(id, {
             status: 'rejected'
           })
+
           if (errors) {
             return false
           }
+          const log = new models.EventLog({
+            userId: me.id,
+            userEmail: me.email,
+            eventId: id,
+            action: 'RejectEvent',
+            subjectText: comment
+          })
+          log.save()
         } catch (error) {
           return false
         }

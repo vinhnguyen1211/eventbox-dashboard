@@ -5,9 +5,9 @@
   text-decoration: none;
   outline: none;
   transition: color 0.3s ease 0s;
-  &:hover{
+  &:hover {
     outline: 0px;
     text-decoration: none;
-    color: rgba($color: #1890ff, $alpha: .7)
+    color: rgba($color: #1890ff, $alpha: 0.7);
   }
 }

@@ -95,14 +95,16 @@ export const routesComp = [
 
 export const routesMenu = [
   {
-    title: 'Announcement',
+    key: 'announcement',
+    title: 'sidebar_Announcement',
     path: routes.DASHBOARD,
     roles: ['user', 'admin'],
     icon: 'layout',
     breadcumbs: ['Announcement']
   },
   {
-    title: 'Admin',
+    key: 'admin',
+    title: 'sidebar_Administration',
     roles: ['admin'],
     icon: 'star',
     subComponent: [
@@ -121,7 +123,8 @@ export const routesMenu = [
     ]
   },
   {
-    title: 'My account',
+    key: 'my_account',
+    title: 'sidebar_MyAccount',
     roles: ['admin', 'user'],
     icon: 'user',
     subComponent: [
@@ -140,13 +143,15 @@ export const routesMenu = [
     ]
   },
   {
-    title: 'Departments',
+    key: 'departments',
+    title: 'sidebar_Departments',
     roles: ['admin', 'user'],
     icon: 'home',
     subComponent: []
   },
   {
-    title: 'Events',
+    key: 'events',
+    title: 'sidebar_Events',
     roles: ['admin', 'user'],
     icon: 'project',
     subComponent: [
@@ -165,7 +170,8 @@ export const routesMenu = [
     ]
   },
   {
-    title: 'Xét duyệt',
+    key: 'events_approval',
+    title: 'sidebar_EventsApproval',
     roles: ['admin', 'reviewer'],
     icon: 'file-protect',
     subComponent: [

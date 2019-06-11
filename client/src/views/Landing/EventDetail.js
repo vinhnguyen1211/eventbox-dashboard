@@ -11,7 +11,7 @@ import { withRouter } from 'react-router-dom'
 import { Link, Events, scroller } from 'react-scroll'
 
 import { event } from '@gqlQueries'
-import { message, Row, Spin, Col, Icon, Card, Button, BackTop } from 'antd'
+import { message, Row, Col, Icon, Card, Button, BackTop } from 'antd'
 import { client } from '@client'
 import moment from 'moment'
 import 'moment/locale/vi'
@@ -40,6 +40,10 @@ class Landing extends React.Component {
     if (location.port) setTimeout(() => this.props.stores.landing.checkShow(true), 500)
   }
 
+  setDomRef = (dom) => {
+    this.dom = dom
+  }
+
   render() {
     const { isShow } = this.props.stores.landing
     const { refetch } = this.props
@@ -50,12 +54,7 @@ class Landing extends React.Component {
     ]
 
     return (
-      <div
-        className='templates-wrapper'
-        ref={(d) => {
-          this.dom = d
-        }}
-      >
+      <div className='templates-wrapper' ref={this.setDomRef}>
         <SignInModal refetch={refetch} />
         <SignUpModal refetch={refetch} />
         {isShow && children}
@@ -79,17 +78,24 @@ class EventItem extends React.Component {
   }
 
   componentDidMount = async () => {
-    await this.props.stores.me.getMe()
+    // await this.props.stores.me.getMe()
     const { eventId: slug } = this.props.match.params
     const eventId = slug.split('-')[slug.split('-').length - 1]
     let result
     try {
       result = await client.query({
         query: event.GET_EVENT_DETAIL,
-        variables: { eventId }
+        variables: { eventId, forHome: true }
       })
     } catch (error) {
-      return message.error('Failed to fetch event')
+      let msg = 'Failed to fetch event'
+      const { graphQLErrors } = error
+      if (graphQLErrors) {
+        const [{ message }] = graphQLErrors
+        msg = message
+      }
+      this.props.history.replace('/')
+      return message.error(msg)
     }
     this.setState({
       event: result.data.event,
@@ -140,21 +146,19 @@ class EventItem extends React.Component {
   render() {
     const { event, loading } = this.state
 
-    return (
-      <Spin spinning={loading}>
-        {event && (
-          <div className='event-landing-detail__wrapper'>
-            <Row className='event-image-thumbnail__wrapper'>
-              <img src={event && event.images.thumbnail} alt='thumbnail' />
-            </Row>
-            <Header event={event} className='event-header-info__wrapper' />
-            <HeaderNav className='event-header-nav__wrapper' />
-            <AboutEvent event={event} className='event-description__wrapper' />
-            <AboutOrganization event={event} className='event-organization__wrapper' />
-            <BackTop />
-          </div>
-        )}
-      </Spin>
+    return loading ? (
+      <Card loading />
+    ) : (
+      <div className='event-landing-detail__wrapper'>
+        <Row className='event-image-thumbnail__wrapper'>
+          <img src={event && event.images.thumbnail} alt='thumbnail' />
+        </Row>
+        <Header event={event} className='event-header-info__wrapper' />
+        <HeaderNav className='event-header-nav__wrapper' />
+        <AboutEvent event={event} className='event-description__wrapper' />
+        <AboutOrganization event={event} className='event-organization__wrapper' />
+        <BackTop />
+      </div>
     )
   }
 }

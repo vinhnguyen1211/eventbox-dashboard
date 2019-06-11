@@ -46,12 +46,14 @@ class Landing {
 
   @action
   async getEvents() {
-    const {
-      data: { eventsHome }
-    } = await client.query({
-      query: event.GET_EVENTS_HOMEPAGE,
-      fetchPolicy: 'network-only'
-    })
+    let eventsHome
+    try {
+      const { data } = await client.query({
+        query: event.GET_EVENTS_HOMEPAGE,
+        fetchPolicy: 'network-only'
+      })
+      eventsHome = data.eventsHome
+    } catch (error) {}
 
     if (eventsHome.length) {
       this.allSuggestion = eventsHome.map((e) => {

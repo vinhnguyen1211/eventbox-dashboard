@@ -22,8 +22,9 @@ import { RedisPubSub } from 'graphql-redis-subscriptions'
 import Redis from 'ioredis'
 // oauth VL
 import uuidV4 from 'uuid/v4'
-import bodyParser from 'body-parser'
 import { createToken } from './resolvers/user'
+
+import { tokenExpired } from './resolvers/user'
 
 const PROD_MODE = process.env.NODE_ENV === 'production'
 const PORT = process.env.SERVER_PORT || 8000
@@ -49,6 +50,8 @@ const pubsub =
         subscriber: new Redis(options)
       })
     : new PubSub()
+
+export const ioredis = new Redis(options)
 
 // const corsOptions = {
 //   origin: [`http://${HOST}:${PORT}`, `https://${HOST}:${PORT}`],
@@ -84,7 +87,13 @@ const getMe = async (req) => {
 
   if (token) {
     try {
-      return await jwt.verify(token, process.env.TOKEN_SECRET)
+      const decode = await jwt.verify(token, process.env.TOKEN_SECRET)
+      const jti = decode.jti
+      const found = await ioredis.get(jti)
+      if (found) {
+        throw new AuthenticationError('Your session expired. Sign in again.')
+      }
+      return decode
     } catch (e) {
       throw new AuthenticationError('Your session expired. Sign in again.')
     }
@@ -152,7 +161,7 @@ server.applyMiddleware({
   app,
   path: '/graphql',
   cors: {
-    origin: [`http://${HOST}:${PORT}`, `https://${HOST}:${PORT}`]
+    origin: [`http://${HOST}:${PORT}`, `http://localhost:3005`]
   }
 })
 
@@ -273,6 +282,27 @@ app.get('/api/login/oauthVL', async (req, res) => {
     const redirectUrl = `${VL_OAUTH}/LoginVL?redirect_uri=${EB_HOST}&state=${uuidV4()}`
     return res.status(200).redirect(redirectUrl)
   }
+})
+
+app.post('/api/auth/logout', async (req, res) => {
+  const token = req.headers['x-token']
+  if (token) {
+    try {
+      const decode = await jwt.verify(token, process.env.TOKEN_SECRET)
+      const jti = decode.jti
+      ioredis.setex(jti, tokenExpired, true, function(err, res) {
+        // console.log('res: ', res)
+        // console.log('err: ', err)
+      })
+    } catch (error) {
+      return res.status(400).json({
+        message: 'Logout failed'
+      })
+    }
+  }
+  return res.status(200).json({
+    message: 'Logout success'
+  })
 })
 
 const errorLogger = async (error) => {

@@ -4,11 +4,12 @@ import { combineResolvers } from 'graphql-resolvers'
 import { AuthenticationError, UserInputError } from 'apollo-server'
 import { isAuthenticated, isAdmin, isDepartmentMember } from './authorization'
 import rp from 'request-promise'
+import { hash } from 'bcryptjs'
 
 import nodemailer from 'nodemailer'
 import confirmEmail from './mailTemplate/confirmEmail'
 
-const tokenExpired = 60 * 60 * 8 // 8 hours
+export const tokenExpired = 60 * 60 * 8 // 8 hours
 const tokenExpiredMobile = '7d' // 7 days
 const EVENTBOX_HOST = process.env.EVENTBOX_HOST || 'http://localhost:8000'
 
@@ -212,7 +213,16 @@ export default {
       await models.User.findByIdAndUpdate(me.id, { photo })
 
       return photo
-    })
+    }),
+
+    changePassword: combineResolvers(
+      isAuthenticated,
+      async (parent, { newPassword }, { models, me }) => {
+        const password = await hash(newPassword, 10)
+        const updated = await models.User.findByIdAndUpdate(me.id, { password })
+        return !!updated
+      }
+    )
   },
 
   User: {
