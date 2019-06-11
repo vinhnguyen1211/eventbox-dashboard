@@ -7,6 +7,7 @@ import eventSchema from './event'
 import userSchema from './user'
 import departmentuserSchema from './departmentUser'
 import ticketSchema from './ticket'
+import eventlogSchema from './eventlog'
 
 const linkSchema = gql`
   type Query {
@@ -32,5 +33,6 @@ export default [
   eventSchema,
   userSchema,
   departmentuserSchema,
-  ticketSchema
+  ticketSchema,
+  eventlogSchema
 ]

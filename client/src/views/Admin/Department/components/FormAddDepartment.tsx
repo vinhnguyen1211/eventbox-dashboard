@@ -62,7 +62,7 @@ class FormAddDepartment extends Component<FormComponentProps & { onAddSuccess: F
             </Item>
           )
         })}
-        <Item key={name} colon={false} {...ITEM_LAYOUT}>
+        <Item key='button_submit' colon={false} {...ITEM_LAYOUT}>
           <Row type='flex' justify='center'>
             <Button htmlType='submit' type='primary'>
               Xác nhận

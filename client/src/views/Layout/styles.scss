@@ -1,11 +1,11 @@
 .layout-logo {
   &__wrapper {
     height: 44px;
-    background: rgba(255,255,255,.2);
+    background: rgba(255, 255, 255, 0.2);
     margin: 10px 8px 10px 8px;
     cursor: pointer;
     text-align: center;
-    transition: all .3s ease-in;
+    transition: all 0.3s ease-in;
     color: #fff;
     // &::after{
     //   content: 'EventBox Dashboard'
@@ -15,7 +15,7 @@
     background-repeat: no-repeat;
     background-position: center;
     &:hover {
-      color: rgba($color: #fff, $alpha: .5);
+      color: rgba($color: #fff, $alpha: 0.5);
     }
   }
 }
@@ -26,14 +26,14 @@
     font-size: 16px;
     opacity: 1;
     transition: opacity 0.3s;
-    &:hover{
+    &:hover {
       cursor: pointer;
       opacity: 0.7;
     }
-    &.inactive{
-      color: #A3A6A8;
-      &:hover{
-        color: #A3A6A8;
+    &.inactive {
+      color: #a3a6a8;
+      &:hover {
+        color: #a3a6a8;
         opacity: 1;
         cursor: not-allowed;
       }

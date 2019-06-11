@@ -1,14 +1,18 @@
 import React, { Component } from 'react'
 import { Link, Events, scroller } from 'react-scroll'
 import { event } from '@gqlQueries'
-import { message, Row, Spin, Col, Icon, Card, Button, BackTop, Divider } from 'antd'
+import { message, Row, Col, Icon, Card, Button, BackTop, Divider, Tabs } from 'antd'
 import { client } from '@client'
 import moment from 'moment'
 // import 'moment/locale/vi'
 import { Editor as EditorWysiwyg } from 'react-draft-wysiwyg'
 import { convertFromRaw, EditorState } from 'draft-js'
 import { withRouter } from 'react-router'
+import { withTranslation } from 'react-i18next'
+import EventLogs from './EventLogs'
 import './eventdetail.scss'
+
+const { TabPane } = Tabs
 
 class EventDetailReview extends Component {
   constructor(props) {
@@ -26,10 +30,17 @@ class EventDetailReview extends Component {
     try {
       result = await client.query({
         query: event.GET_EVENT_DETAIL,
-        variables: { eventId }
+        variables: { eventId, forUpdate: true }
       })
     } catch (error) {
-      return message.error('Failed to fetch event')
+      let msg = 'Failed to fetch event'
+      const { graphQLErrors } = error
+      if (graphQLErrors) {
+        const [{ message }] = graphQLErrors
+        msg = message
+      }
+      this.props.history.replace('/dashboard/events')
+      return message.error(msg)
     }
     this.setState({
       event: result.data.event,
@@ -86,32 +97,40 @@ class EventDetailReview extends Component {
   render() {
     // console.log('event: ',this.state.event)
     const { event, loading } = this.state
-    // const { eventId } = this.props.match.params
+    const { t } = this.props
+    const { eventId } = this.props.match.params
 
-    return (
-      <Spin spinning={loading}>
-        {event && (
-          <div className='event-review-detail__wrapper'>
-            <Row className='event-image-thumbnail__wrapper'>
-              <img src={event && event.images.thumbnail} alt='thumbnail' />
-            </Row>
-            <Header event={event} className='event-header-info__wrapper' />
-            <HeaderNav className='event-header-nav__wrapper' />
-            <AboutEvent event={event} className='event-description__wrapper' />
-            <AboutOrganization event={event} className='event-organization__wrapper' />
-            <Divider />
-            {/* <div style={{display: 'flex'}} >
-              <div style={{marginRight: 18}} >
-                <ApproveButton eventId={eventId} {...this.props} />
-              </div>
-              <div>
-                <RejectButton eventId={eventId} {...this.props} />
-              </div>
-            </div> */}
-            <BackTop />
-          </div>
-        )}
-      </Spin>
+    return loading ? (
+      <Card loading />
+    ) : (
+      <Tabs defaultActiveKey='1'>
+        <TabPane tab={t('Event')} key='1'>
+          {event && (
+            <div className='event-review-detail__wrapper'>
+              <Row className='event-image-thumbnail__wrapper'>
+                <img src={event && event.images.thumbnail} alt='thumbnail' />
+              </Row>
+              <Header event={event} className='event-header-info__wrapper' />
+              <HeaderNav className='event-header-nav__wrapper' />
+              <AboutEvent event={event} className='event-description__wrapper' />
+              <AboutOrganization event={event} className='event-organization__wrapper' />
+              <Divider />
+              {/* <div style={{display: 'flex'}} >
+            <div style={{marginRight: 18}} >
+              <ApproveButton eventId={eventId} {...this.props} />
+            </div>
+            <div>
+              <RejectButton eventId={eventId} {...this.props} />
+            </div>
+          </div> */}
+              <BackTop />
+            </div>
+          )}
+        </TabPane>
+        <TabPane tab={t('History log')} key='2'>
+          <EventLogs eventId={eventId} />
+        </TabPane>
+      </Tabs>
     )
   }
 }
@@ -217,4 +236,4 @@ const AboutOrganization = ({ className, event }) => (
   </div>
 )
 
-export default withRouter(EventDetailReview)
+export default withRouter(withTranslation()(EventDetailReview))

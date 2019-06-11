@@ -115,4 +115,19 @@ eventSchema.pre('find', async (next) => {
   next()
 })
 
+eventSchema.post('save', async function(doc, next) {
+  const symbol = Symbol.for('userEmail')
+  const userEmail = this[symbol]
+  const EventLog = this.model('eventlog')
+  const newLog = new EventLog({
+    userId: this.userId,
+    userEmail,
+    eventId: this.id,
+    action: 'CreateEvent',
+    subjectText: ''
+  })
+  newLog.save()
+  next()
+})
+
 export default mongoose.model('event', eventSchema)

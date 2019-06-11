@@ -50,18 +50,20 @@ class FirstSection extends Component {
   handleTab1Search = () => {
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        try {
-          const {
-            data: { eventsByKeywords }
-          } = await client.query({
-            variables: { keywords: values.searchbar },
-            query: event.EVENTS_BY_KEYWORDS,
-            fetchPolicy: 'network-only'
-          })
-          if (!eventsByKeywords.length) message.warn('No event to show base on your keywords!')
-          this.setState({ searchResult: eventsByKeywords })
-        } catch (err) {
-          message.error(err)
+        if (values.searchbar) {
+          try {
+            const {
+              data: { eventsByKeywords }
+            } = await client.query({
+              variables: { keywords: values.searchbar },
+              query: event.EVENTS_BY_KEYWORDS,
+              fetchPolicy: 'network-only'
+            })
+            if (!eventsByKeywords.length) message.warn('No event to show base on your keywords!')
+            this.setState({ searchResult: eventsByKeywords })
+          } catch (err) {
+            message.error(err)
+          }
         }
       } else return message.error('An error occurred!')
     })

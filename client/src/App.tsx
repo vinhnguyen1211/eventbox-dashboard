@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { client } from '@client'
 import { Router, Route, Switch } from 'react-router-dom'
 import gql from 'graphql-tag'
-import queryString from 'query-string'
+// import queryString from 'query-string'
 
 import history from './constants/history'
 import * as routes from '@routes'
@@ -15,7 +15,7 @@ import Page404 from './Page/404'
 import Landing from './views/Landing'
 import LandingEventDetail from './views/Landing/EventDetail'
 import DashboardContainer from './views/Layout/Container'
-import { Skeleton, message } from 'antd'
+import { Skeleton } from 'antd'
 const Cookies = require('js-cookie')
 
 const setSession = gql`
@@ -97,6 +97,7 @@ const App = (props: withSessionProps) => {
     }
     client.mutate({ mutation: setSession, variables: { session } })
     // console.log('session: ', session)
+    // eslint-disable-next-line
   }, [])
 
   if (oauthLoading) {

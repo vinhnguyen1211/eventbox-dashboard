@@ -10,12 +10,12 @@ export const isAdmin = combineResolvers(isAuthenticated, (parent, args, { me: { 
 
 export const isEventOwner = combineResolvers(
   isAuthenticated,
-  async (parent, { id }, { models, me }) => {
+  async (parent, { id, eventId }, { models, me }) => {
     if (isAdminRole(me)) {
       return skip
     }
-
-    const event = await models.Event.findById(id)
+    const _eventId = id || eventId
+    const event = await models.Event.findById(_eventId)
 
     if (event.userId.toString() !== me.id) {
       throw new ForbiddenError('Not authenticated as owner.')

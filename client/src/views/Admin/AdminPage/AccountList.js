@@ -87,13 +87,13 @@ class AccountList extends Component {
     ]
   }
 
-  onGridReady = params => {
+  onGridReady = (params) => {
     this.gridApi = params.api
     this.gridColumnApi = params.columnApi
     if (params.api) params.api.sizeColumnsToFit()
   }
 
-  onPageSizeChanged = newPageSize => {
+  onPageSizeChanged = (newPageSize) => {
     this.gridApi.paginationSetPageSize(newPageSize)
   }
 
@@ -102,13 +102,15 @@ class AccountList extends Component {
     return (
       <>
         <Query query={user.GET_ALL_USERS}>
-          {({loading, error, data: { users }, refetch}) => {
+          {({ loading, error, data: { users }, refetch }) => {
             if (loading) return 'Loading...'
             if (error) return message.error(error)
             return (
               <PageHeader
                 extra={[
-                  <Button key='0' type='primary' ghost>Refresh</Button>,
+                  <Button key='0' type='primary' ghost>
+                    Refresh
+                  </Button>,
                   <Select
                     key='1'
                     defaultValue={gridOptions.paginationPageSize}
@@ -122,10 +124,7 @@ class AccountList extends Component {
                   </Select>
                 ]}
                 footer={
-                  <div
-                    className='ag-theme-balham'
-                    style={{ height: '65vh', width: '100%' }}
-                  >
+                  <div className='ag-theme-balham' style={{ height: '65vh', width: '100%' }}>
                     <AgGridReact
                       gridOptions={gridOptions}
                       columnDefs={this.getColumnDefs()}
@@ -156,17 +155,8 @@ class RoleRenderer extends Component {
     const { value } = this.props
     return (
       <>
-        {value.map(role => (
-          <Tag
-            key={role}
-            color={
-              role === 'admin'
-                ? 'red'
-                : role === 'user'
-                  ? 'blue'
-                  : 'purple'
-            }
-          >
+        {value.map((role) => (
+          <Tag key={role} color={role === 'admin' ? 'red' : role === 'user' ? 'blue' : 'purple'}>
             {role}
           </Tag>
         ))}
