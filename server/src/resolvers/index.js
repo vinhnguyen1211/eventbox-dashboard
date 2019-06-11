@@ -6,6 +6,7 @@ import userResolvers from './user'
 import eventResolvers from './event'
 import departmentuserResolvers from './departmentUser'
 import ticketResolvers from './ticket'
+import eventlogResolvers from './eventlog'
 
 export default [
   scalarCustom,
@@ -15,5 +16,6 @@ export default [
   eventResolvers,
   userResolvers,
   departmentuserResolvers,
-  ticketResolvers
+  ticketResolvers,
+  eventlogResolvers
 ]

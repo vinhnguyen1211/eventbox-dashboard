@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { client } from '@client'
 import { Router, Route, Switch } from 'react-router-dom'
 import gql from 'graphql-tag'
-import queryString from 'query-string'
+// import queryString from 'query-string'
 
 import history from './constants/history'
 import * as routes from '@routes'
@@ -15,7 +15,7 @@ import Page404 from './Page/404'
 import Landing from './views/Landing'
 import LandingEventDetail from './views/Landing/EventDetail'
 import DashboardContainer from './views/Layout/Container'
-import { Skeleton, message } from 'antd'
+import { Skeleton } from 'antd'
 const Cookies = require('js-cookie')
 
 const setSession = gql`
@@ -97,6 +97,7 @@ const App = (props: withSessionProps) => {
     }
     client.mutate({ mutation: setSession, variables: { session } })
     // console.log('session: ', session)
+    // eslint-disable-next-line
   }, [])
 
   if (oauthLoading) {
@@ -107,6 +108,7 @@ const App = (props: withSessionProps) => {
     )
   }
 
+  const renderSignUp = () => <SignUpPage refetch={refetch} />
   const renderSignIn = () => <SignInPage refetch={refetch} session={session} />
   const renderHome = () => <Landing refetch={refetch} session={session} />
   const renderEventDetail = () => <LandingEventDetail refetch={refetch} session={session} />
@@ -121,10 +123,10 @@ const App = (props: withSessionProps) => {
   return (
     <Router history={history}>
       <Switch>
-        <Route exact path={routes.SIGN_UP} component={() => <SignUpPage refetch={refetch} />} />
+        <Route exact path={routes.SIGN_UP} component={renderSignUp} />
         <Route exact path={routes.SIGN_IN} component={renderSignIn} />
-        <Route exact path={routes.HOME} component={renderHome} />
-        <Route exact path={`${routes.EVENT}/:eventId`} component={renderEventDetail} />
+        <Route exact path={routes.HOME} render={renderHome} />
+        <Route exact path={`${routes.EVENT}/:eventId`} render={renderEventDetail} />
         <Route exact path={`${routes.DASHBOARD}*`} render={renderDashboard} />
         <Route component={Page404} />
       </Switch>

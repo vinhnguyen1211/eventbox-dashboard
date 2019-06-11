@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Link, Events, scroller } from 'react-scroll'
 
 import { event } from '@gqlQueries'
-import { message, Row, Spin, Col, Icon, Card, Button, BackTop, Divider } from 'antd'
+import { message, Row, Col, Icon, Card, Button, BackTop, Divider, Input } from 'antd'
 import { client } from '@client'
 import moment from 'moment'
 // import 'moment/locale/vi'
@@ -13,6 +13,8 @@ import './eventdetail.scss'
 import { Mutation } from 'react-apollo'
 import { withRouter } from 'react-router'
 import { DB_EVENT_REVIEW } from '@routes'
+import { withModal } from '@components'
+import { withTranslation } from 'react-i18next'
 
 class EventDetailReview extends React.Component {
   constructor(props) {
@@ -90,30 +92,30 @@ class EventDetailReview extends React.Component {
     const { event, loading } = this.state
     const { eventId } = this.props.match.params
 
-    return (
-      <Spin spinning={loading}>
-        {event && (
-          <div className='event-review-detail__wrapper'>
-            <Row className='event-image-thumbnail__wrapper'>
-              <img src={event && event.images.thumbnail} alt='thumbnail' />
-            </Row>
-            <Header event={event} className='event-header-info__wrapper' />
-            <HeaderNav className='event-header-nav__wrapper' />
-            <AboutEvent event={event} className='event-description__wrapper' />
-            <AboutOrganization event={event} className='event-organization__wrapper' />
-            <Divider />
-            <div style={{ display: 'flex' }}>
-              <div style={{ marginRight: 18 }}>
-                <ApproveButton eventId={eventId} {...this.props} />
-              </div>
-              <div>
-                <RejectButton eventId={eventId} {...this.props} />
-              </div>
+    return loading ? (
+      <Card loading />
+    ) : (
+      event && (
+        <div className='event-review-detail__wrapper'>
+          <Row className='event-image-thumbnail__wrapper'>
+            <img src={event && event.images.thumbnail} alt='thumbnail' />
+          </Row>
+          <Header event={event} className='event-header-info__wrapper' />
+          <HeaderNav className='event-header-nav__wrapper' />
+          <AboutEvent event={event} className='event-description__wrapper' />
+          <AboutOrganization event={event} className='event-organization__wrapper' />
+          <Divider />
+          <div style={{ display: 'flex' }}>
+            <div style={{ marginRight: 18 }}>
+              <ApproveButton eventId={eventId} {...this.props} />
             </div>
-            <BackTop />
+            <div>
+              <RejectButton eventId={eventId} {...this.props} />
+            </div>
           </div>
-        )}
-      </Spin>
+          <BackTop />
+        </div>
+      )
     )
   }
 }
@@ -236,17 +238,27 @@ class ApproveButton extends Component {
 
     return (
       <Mutation mutation={event.APPROVE_EVENT_BYID} variables={{ id: eventId }}>
-        {(approveEvent, { data, loading }) => (
-          <Button type='primary' onClick={() => this.handleApprove(approveEvent)}>
-            Duyệt sự kiện
-          </Button>
-        )}
+        {(approveEvent, { data, loading }) => {
+          const onClick = () => {
+            this.handleApprove(approveEvent)
+          }
+          return (
+            <Button type='primary' onClick={onClick}>
+              Duyệt sự kiện
+            </Button>
+          )
+        }}
       </Mutation>
     )
   }
 }
 
+@withModal
 class RejectButton extends Component {
+  state = {
+    comment: ''
+  }
+
   handleRejct = async (rejectEvent) => {
     try {
       await rejectEvent()
@@ -256,17 +268,52 @@ class RejectButton extends Component {
     }
   }
 
-  render() {
+  handleOpenModal = (rejectEvent) => {
     const {
       handleRejct,
-      props: { eventId }
+      handleChange,
+      props: { modal, t },
+      state: { comment }
+    } = this
+    const reject = () => {
+      handleRejct(rejectEvent)
+    }
+
+    modal.show({
+      title: t('Rejection feedback'),
+      body: (
+        <Input.TextArea
+          onChange={handleChange}
+          placeholder='Reason of why is event was rejected'
+          autosize={{ minRows: 5 }}
+          defaultValue={comment}
+        />
+      ),
+      footer: (
+        <Button type='primary' onClick={reject}>
+          SUBMIT
+        </Button>
+      )
+    })
+  }
+
+  handleChange = (e) => {
+    const comment = e.target.value
+    this.setState({ comment })
+  }
+
+  render() {
+    const {
+      handleOpenModal,
+      props: { eventId },
+      state: { comment }
     } = this
 
     return (
-      <Mutation mutation={event.REJECT_EVENT_BYID} variables={{ id: eventId }}>
+      <Mutation mutation={event.REJECT_EVENT_BYID} variables={{ id: eventId, comment }}>
         {(rejectEvent, { data, loading }) => {
           const onClick = () => {
-            handleRejct(rejectEvent)
+            handleOpenModal(rejectEvent)
           }
           return (
             <Button type='danger' onClick={onClick}>
@@ -279,4 +326,4 @@ class RejectButton extends Component {
   }
 }
 
-export default withRouter(EventDetailReview)
+export default withRouter(withTranslation()(EventDetailReview))

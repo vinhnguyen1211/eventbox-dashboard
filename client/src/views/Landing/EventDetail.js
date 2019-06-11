@@ -78,17 +78,24 @@ class EventItem extends React.Component {
   }
 
   componentDidMount = async () => {
-    await this.props.stores.me.getMe()
+    // await this.props.stores.me.getMe()
     const { eventId: slug } = this.props.match.params
     const eventId = slug.split('-')[slug.split('-').length - 1]
     let result
     try {
       result = await client.query({
         query: event.GET_EVENT_DETAIL,
-        variables: { eventId }
+        variables: { eventId, forHome: true }
       })
     } catch (error) {
-      return message.error('Failed to fetch event')
+      let msg = 'Failed to fetch event'
+      const { graphQLErrors } = error
+      if (graphQLErrors) {
+        const [{ message }] = graphQLErrors
+        msg = message
+      }
+      this.props.history.replace('/')
+      return message.error(msg)
     }
     this.setState({
       event: result.data.event,

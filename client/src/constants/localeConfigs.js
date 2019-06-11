@@ -53,8 +53,9 @@ export const localeText = {
 
   /* eslint-disable */
   // other
-  noRowsToShow: '<div>' +
-  '<svg width="105" height="104" viewBox="0 0 116 115" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+  noRowsToShow:
+    '<div>' +
+    '<svg width="105" height="104" viewBox="0 0 116 115" fill="none" xmlns="http://www.w3.org/2000/svg">' +
     '<path d="M104.058 43.5585C104.139 43.5585 104.219 43.5585 104.3 43.5585C102.771 37.9269 97.6223 33.7434 91.4275 33.7434H30.3647C24.2504 33.7434 19.1015 37.9269 17.4924 43.5585C17.5729 43.5585 17.6533 43.5585 17.7338 43.5585H104.058Z" fill="#4249BE"/>' +
     '<path d="M64.9591 74.6936L34.4679 77.3485C30.5258 77.6703 27.1468 74.7741 26.7446 70.8319L23.1243 28.5144C22.8025 24.5722 25.6987 21.1933 29.6408 20.791L60.132 18.2166C64.0742 17.8947 67.4531 20.791 67.8554 24.7331L71.4757 66.9702C71.7975 70.9124 68.9012 74.3718 64.9591 74.6936Z" fill="#9EA3F3"/>' +
     '<path d="M17.7339 49.5126C17.4926 49.5126 17.3317 49.5126 17.0903 49.4321C17.8144 56.1096 23.446 61.339 30.3649 61.339H91.4277C98.266 61.339 103.978 56.1096 104.702 49.4321C104.541 49.5126 104.3 49.5126 104.059 49.5126H17.7339Z" fill="#4249BE"/>' +
@@ -81,13 +82,13 @@ export const localeText = {
     '<path opacity="0.2" d="M66.7289 109.931L64.2349 114.115H69.1424L66.7289 109.931Z" stroke="#4B4668" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>' +
     '<path opacity="0.2" d="M2.44813 46.455L1 49.0294H3.97671L2.44813 46.455Z" stroke="#4B4668" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>' +
     '<defs>' +
-      '<linearGradient id="paint0_linear" x1="105.587" y1="106.794" x2="-18.7106" y2="13.8726" gradientUnits="userSpaceOnUse">' +
-        '<stop stop-color="#00A296"/>' +
-        '<stop offset="1" stop-color="#6EF8EE"/>' +
-      '</linearGradient>' +
+    '<linearGradient id="paint0_linear" x1="105.587" y1="106.794" x2="-18.7106" y2="13.8726" gradientUnits="userSpaceOnUse">' +
+    '<stop stop-color="#00A296"/>' +
+    '<stop offset="1" stop-color="#6EF8EE"/>' +
+    '</linearGradient>' +
     '</defs>' +
-  '</svg>' +
-  '<p>Không có dữ liệu</p></div>'
+    '</svg>' +
+    '<p>Không có dữ liệu</p></div>'
   /* eslint-enable */
 
   // // enterprise menu
@@ -128,8 +129,10 @@ export const localeText = {
 
 /* eslint-disable */
 export const icons = {
-  groupExpanded: '<span style="width: 25px;height: 25px; text-align: center;margin-left: 8px;"><i style="font-weight: bolder;" class="fa fa-angle-down"></i></span>',
-  groupContracted: '<span style="width: 25px;height: 25px; text-align: center;margin-left: 8px;"><i style="font-weight: bolder;" class="fa fa-angle-right"></i></span>'
+  groupExpanded:
+    '<span style="width: 25px;height: 25px; text-align: center;margin-left: 8px;"><i style="font-weight: bolder;" class="fa fa-angle-down"></i></span>',
+  groupContracted:
+    '<span style="width: 25px;height: 25px; text-align: center;margin-left: 8px;"><i style="font-weight: bolder;" class="fa fa-angle-right"></i></span>'
 }
 /* eslint-enable */
 

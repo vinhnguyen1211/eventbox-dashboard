@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag'
 
 const CREATE_DEPARTMENT = gql`
   mutation($name: String!, $description: String!) {
@@ -10,6 +10,4 @@ const CREATE_DEPARTMENT = gql`
   }
 `
 
-export {
-  CREATE_DEPARTMENT
-}
+export { CREATE_DEPARTMENT }

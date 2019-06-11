@@ -77,7 +77,7 @@ export default gql`
     events(status: String, cursor: String, limit: Int): EventConnection!
     eventsHome(limit: Int): [Event]
     eventsInReview(page: Int, limit: Int): EventReviewConnection!
-    event(id: ID!, forUpdate: Boolean): Event
+    event(id: ID!, forUpdate: Boolean, forHome: Boolean): Event
     countEventByType: countResult
     eventsForSearch: [Event]
     eventsByKeywords(keywords: String!): [Event]
@@ -135,7 +135,7 @@ export default gql`
     publishEvent(id: ID!, departmentIds: [ID]!): Event
 
     approveEvent(id: ID!): Boolean!
-    rejectEvent(id: ID!): Boolean!
+    rejectEvent(id: ID!, comment: String): Boolean!
 
     joinEvent(eventId: ID!, fullName: String!, studentId: String!): EventTicket!
     unjoinEvent(userId: ID!, eventId: ID!): Event!

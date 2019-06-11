@@ -20,6 +20,4 @@ const SUBCRIBE_EVENT_REVIEW = gql`
   }
 `
 
-export {
-  SUBCRIBE_EVENT_REVIEW
-}
+export { SUBCRIBE_EVENT_REVIEW }
