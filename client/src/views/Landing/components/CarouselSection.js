@@ -17,7 +17,7 @@ class CarouselSection extends Component {
     this.props.history.push(`${EVENT}/${event.slug}-${event.id}`)
   }
 
-  handleOnDragStart = e => e.preventDefault()
+  handleOnDragStart = (e) => e.preventDefault()
 
   render() {
     const { i18n } = this.props

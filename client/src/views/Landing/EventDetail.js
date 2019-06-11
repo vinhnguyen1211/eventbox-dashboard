@@ -90,8 +90,8 @@ class EventItem extends React.Component {
     } catch (error) {
       let msg = 'Failed to fetch event'
       const { graphQLErrors } = error
-      if(graphQLErrors){
-        const [{message}] = graphQLErrors
+      if (graphQLErrors) {
+        const [{ message }] = graphQLErrors
         msg = message
       }
       this.props.history.replace('/')

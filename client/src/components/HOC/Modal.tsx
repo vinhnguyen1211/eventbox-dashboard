@@ -12,17 +12,17 @@ const DEFAULT_STATE = {
 }
 
 const ModalHOCWrapper = (Child: React.ComponentType<any>) => {
-  class ModalHOC extends Component{
+  class ModalHOC extends Component {
     state = {
       ...DEFAULT_STATE
     }
 
-    _showModal = ( state: any, callback: void ) => {
+    _showModal = (state: any, callback: void) => {
       this.setState({ visible: true, ...state })
     }
 
     handleCancel = () => {
-      this.setState({visible: false})
+      this.setState({ visible: false })
     }
 
     modal = {
@@ -35,10 +35,7 @@ const ModalHOCWrapper = (Child: React.ComponentType<any>) => {
       return (
         <Fragment>
           <Child {...this.props} modal={this.modal} />
-          <Modal
-            {...rest}
-            onCancel={this.handleCancel}
-          >
+          <Modal {...rest} onCancel={this.handleCancel}>
             {body}
           </Modal>
         </Fragment>
