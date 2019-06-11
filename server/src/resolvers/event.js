@@ -145,8 +145,11 @@ export default {
           }
           return event
         }
+        if (!isAdmin && event.userId.toString() !== me.id) {
+          throw new ForbiddenError('Not authenticated as owner.')
+        }
 
-        return null
+        return event
       }
     ),
 
