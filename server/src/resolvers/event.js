@@ -134,20 +134,20 @@ export default {
       async (parent, { id, forUpdate = false, forHome = false }, { me, models, isAdmin }) => {
         const event = await models.Event.findById(id)
 
-        if (forHome) {
-          if (event.status !== 'active') {
-            throw new ForbiddenError('Event is not found')
-          }
-          return event
-        } else if (forUpdate) {
-          if (!isAdmin && event.userId.toString() !== me.id) {
-            throw new ForbiddenError('Not authenticated as owner.')
-          }
-          return event
-        }
-        if (!isAdmin && event.userId.toString() !== me.id) {
-          throw new ForbiddenError('Not authenticated as owner.')
-        }
+        // if (forHome) {
+        //   if (event.status !== 'active') {
+        //     throw new ForbiddenError('Event is not found')
+        //   }
+        //   return event
+        // } else if (forUpdate) {
+        //   if (!isAdmin && event.userId.toString() !== me.id) {
+        //     throw new ForbiddenError('Not authenticated as owner.')
+        //   }
+        //   return event
+        // }
+        // if (!isAdmin && event.userId.toString() !== me.id) {
+        //   throw new ForbiddenError('Not authenticated as owner.')
+        // }
 
         return event
       }
